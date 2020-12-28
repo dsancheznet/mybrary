@@ -1,3 +1,8 @@
+![Interface](img/screenshot.png)
+
+# mybrary
+A library managing systems for local networks
+
 ## Usage
 
 ### Starting to serve
