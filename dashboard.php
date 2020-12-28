@@ -7,15 +7,15 @@
 	$tmpUsername = $_SESSION['username'];
 	$tmpPassword = $_SESSION['md5pass'];
 	//Is the user logged in on do we have valid credentials?
-	  if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
-	    //NO : Go back to the login form
-	    header("Location: login.php");
-	    //Stop script (not neccessary but recommended)
-	    exit();
-	  }
-		//Declare a new connection to the DB
-		$myDB = new Database( 'db/mybrary.db' );
-		//HTML code...
+	if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
+		//NO : Go back to the login form
+		header("Location: login.php");
+		//Stop script (not neccessary but recommended)
+		exit();
+	}
+	//Declare a new connection to the DB
+	$myDB = new Database( 'db/mybrary.db' );
+//HTML code...
 ?>
 
 <html>

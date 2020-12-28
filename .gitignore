@@ -1,0 +1,3 @@
+*.db
+data/books/*
+data/covers/*
