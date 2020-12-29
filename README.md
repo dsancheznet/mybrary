@@ -35,6 +35,22 @@ From terminal (this will be changed in the future) execute the following stateme
   cat mybrary_scheme.sql | sqlite3 mybrary.db
 ```
 
+## Working with mybrary
+
+### Covers
+
+mbrary is not as fancy as Calibre is, obtaining the covers online. So you have two possibilities:
+
+1- Use the cover from the isbnsearch page ( linked by clicking on the isbn number ) which mostly is pretty small
+
+2- Get a screenshot from the pdf file with imagemagick's convert utility. Given a book named `book.pdf` and given that the cover is on the first page (not allways the case) we type the following at your command line:
+
+```
+  convert book.pdf[0] book.jpg
+```
+
+This will generate a single jpeg file containing the cover with the original size.
+
 ## Limitations
 
 This php script intentionally does **not** require/use a mariadb database server on the host. It uses sqlite3 instead. This strategy has its advantages but algo some disadvantages. As the library is multi-user but mono-library ( i.e. all registered users can *read* - and some can *edit* and *upload* books ) the use of sqlite3 can slow down the execution of the script. The intended use is for family sharing of books or small community access. It should not pose a big problem though to port the software to use mariadb or similar...but this is something that I have no need to do, so I leave this task to others.
