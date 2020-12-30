@@ -1,3 +1,4 @@
 *.db
 data/books/*
 data/covers/*
+.DS_Store
