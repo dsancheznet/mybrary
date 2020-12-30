@@ -25,4 +25,5 @@ CREATE TABLE IF NOT EXISTS `books` (
 	`type`	TEXT,
 	`uploader`	TEXT NOT NULL
 );
+INSERT INTO users (username, md5pass, role, avatar, name) VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3', 7, '072-police-officer-1.svg', 'System Administrator');
 COMMIT;
