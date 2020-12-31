@@ -17,6 +17,7 @@ if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
   echo "Unable to verify your session.";
   exit();
 }
+
 if ( $myDB->getBookCount()>1 ) {
 	$tmpBooks = $myDB->getBookList( $_POST['type'], $_POST['search'], $_POST['tag'] );
 	foreach ( $tmpBooks as $tmpBook ) { //Attention: variable names are different (plural vs singular)
@@ -34,7 +35,9 @@ if ( $myDB->getBookCount()>1 ) {
 			echo insertBookMenu( $tmpBook['id']);
 			echo '</div></div></div>';
 	}
+
 } else {
-  echo '</div</div><h1>No books in DB yet!</h1>';
+    echo '</div></div>';
+    echo '<div class="uk-container-center">No books found in your library</div>';
 }
 ?>

@@ -5,19 +5,23 @@ function PopulatePage() {
   ReloadSection("book-list", "booklist.php");
   ReloadSection("info-table", "infotable.php");
   ReloadSection("search-bar", "searchbar.php");
+  //setTimeout(function(){ OverrideSubmit() }, 2000);
 }
 
   function OverrideSubmit() {
     // Attach the event handler to the form element
-    //document.getElementById("search-form").addEventListener('submit', e => {
-      //event.preventDefault();
-      //document.getElementById("search-filter").value=document.getElementById("search-field").value;
-      //ReloadSection("book-list", "booklist.php", "search="+document.getElementById("search-filter").value);
-      //ReloadSection("search-bar", "searchbar.php", "search="+document.getElementById("search-filter").value);
-      //document.getElementById("search-field").value="";
+    document.getElementById("search-form").addEventListener('submit', e => {
+      event.preventDefault();
+      document.getElementById("search-active").hidden = false;
+      document.getElementById("search-term").innerHTML = document.getElementById("search-field").value;
+      ReloadSection("book-list", "booklist.php", "search="+document.getElementById("search-term").innerHTML);
+      ReloadSection("search-bar", "searchbar.php", "search="+document.getElementById("search-term").innerHTML);
+      document.getElementById("search-field").value="";
       //UIkit.toggle(document.getElementById('search-modal')).toggle();
-    //    });//.{ once: true }
+      alert('done');
+        });//.{ once: true }
   }
+
 
 // PERSONAL INFO FUNCTIONS
 
@@ -56,6 +60,7 @@ function SaveUserData() {
   };
 }
 
+
 // UPLOAD FUNCTIONS
 
 function ShowUploadForm() {
@@ -68,6 +73,7 @@ function ShowUploadForm() {
   xhr.open("GET", "lib/upload.php", true);
   xhr.send();
 }
+
 
 // TAGS functions
 
@@ -125,6 +131,7 @@ function DeleteTag( tagID, tagCaption ) {
   }
 }
 
+
 // BOOK FUNCTIONS
 
 function ResetFilters() {
@@ -134,11 +141,37 @@ function ResetFilters() {
   ResetSearchTerm();
 }
 
+
+// SEARCH FINCTIONS
+
 function ResetSearchTerm() {
-  document.getElementById("search-filter").value="";
+  document.getElementById('search-active').hidden = true;
+  document.getElementById("search-term").value="";
   ReloadSection("book-list", "booklist.php");
-  ReloadSection("search-bar", "searchbar.php");
 }
+
+
+function ShowSearch() {
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("modal-body").innerHTML = this.responseText;
+      document.getElementById("search-field").focus();
+    }
+  };
+  xhr.open("GET", "lib/searchpanel.php", true);
+  xhr.send();
+}
+
+function CloseAndSendSearch() {
+  if (document.getElementById('search-field').value!="") {
+    document.getElementById('search-active').hidden = false;
+    document.getElementById('search-term').innerHTML = document.getElementById('search-field').value;
+    ReloadSection("book-list", "booklist.php");
+  }
+  UIkit.toggle(document.getElementById('modal-dash')).toggle();
+}
+
 
 // GENERAL FUNCTIONS
 

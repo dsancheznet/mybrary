@@ -7,7 +7,7 @@
 	$tmpUsername = $_SESSION['username'];
 	$tmpPassword = $_SESSION['md5pass'];
 	//Is the user logged in on do we have valid credentials?
-	if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
+	if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) or ($tmpUsername=="") or $tmpPassword=="") {
 		//NO : Go back to the login form
 		header("Location: login.php");
 		//Stop script (not neccessary but recommended)
@@ -35,12 +35,11 @@
 <!-- HIDDEN FIELDS -->
 		<input type="hidden" id="tag-filter" value="">
 		<input type="hidden" id="type-filter" value="">
-		<input type="hidden" id="search-filter" value="">
 <!-- /HIDDEN FIELDS -->
 		<!--HEADER-->
 		<header id="top-head" class="uk-position-fixed">
 			<div class="uk-container uk-container-expand uk-background-primary">
-				<nav id="search-bar" class="uk-navbar uk-light" data-uk-navbar="mode:click; duration: 250">
+				<nav id="search-bar" class="uk-navbar uk-light uk-padding-small" data-uk-navbar="mode:click; duration: 250">
 <!--
  .d8888b.  8888888888        d8888 8888888b.   .d8888b.  888    888 888888b.         d8888 8888888b.
 d88P  Y88b 888              d88888 888   Y88b d88P  Y88b 888    888 888  "88b       d88888 888   Y88b
