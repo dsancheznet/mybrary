@@ -67,3 +67,9 @@ This will generate a single jpeg file containing the cover with the original siz
 This php script intentionally does **not** require/use a mariadb database server on the host. It uses sqlite3 instead. This strategy has its advantages but algo some disadvantages. As the library is multi-user but mono-library ( i.e. all registered users can *read* - and some can *edit* and *upload* books ) the use of sqlite3 can slow down the execution of the script. The intended use is for family sharing of books or small community access. It should not pose a big problem though to port the software to use mariadb or similar...but this is something that I have no need to do, so I leave this task to others.
 
 Every book, can only exist once. It is *not* possible to have different copies of the same book in different formats. Please choose the best format for your needs and convert it to other formats if needed ( as Calibre does ).
+
+## TODO
+
+[ ] - Finish Upload
+[ ] - Finish Tag Editor
+[ ] - Include https://mozilla.github.io/pdf.js/

@@ -68,11 +68,115 @@ function ShowUploadForm() {
   xhr.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       document.getElementById("modal-body").innerHTML = this.responseText;
+      ConfigureUpload();
     }
   };
   xhr.open("GET", "lib/upload.php", true);
   xhr.send();
 }
+
+
+function ConfigureUpload() {
+
+      var bar = document.getElementById('js-progressbar');
+
+      UIkit.upload('.js-upload', {
+
+          url: 'lib/chunk.php',
+          multiple: true,
+
+          beforeSend: function () {
+              console.log('beforeSend', arguments);
+          },
+          beforeAll: function () {
+              console.log('beforeAll', arguments);
+          },
+          load: function () {
+              console.log('load', arguments);
+          },
+          error: function () {
+              console.log('error', arguments);
+          },
+          complete: function () {
+              console.log('complete', arguments);
+          },
+
+          loadStart: function (e) {
+              console.log('loadStart', arguments);
+
+              bar.removeAttribute('hidden');
+              bar.max = e.total;
+              bar.value = e.loaded;
+          },
+
+          progress: function (e) {
+              console.log('progress', arguments);
+
+              bar.max = e.total;
+              bar.value = e.loaded;
+          },
+
+          loadEnd: function (e) {
+              console.log('loadEnd', arguments);
+
+              bar.max = e.total;
+              bar.value = e.loaded;
+          },
+
+          completeAll: function () {
+              console.log('completeAll', arguments);
+
+              setTimeout(function () {
+                  bar.setAttribute('hidden', 'hidden');
+              }, 1000);
+
+              alert('Upload Completed');
+          }
+
+      });
+
+}
+
+
+/*
+$(document).ready(function() {
+	// Setup html5 version
+	$("#uploader").pluploadQueue({
+		// General settings
+		runtimes : 'html5,html4',
+
+		// Fake server response here
+		// url : '../upload.php',
+		url: "/echo/json",
+
+		max_file_size : '500mb',
+		chunks : {
+			size: '1mb',
+			send_chunk_number: false // set this to true, to send chunk and total chunk numbers instead of offset and total bytes
+		},
+		rename : true,
+		dragdrop: true,
+		filters : [
+    {title : "PDF files", extensions : "pdf"},
+    {title : "ePub files", extensions : "epub"},
+    {title : "Markdown files", extensions : "md"},
+		{title : "Plain Text files", extensions : "txt"}
+		],
+
+		// Resize images on clientside if we can
+		resize : {width : 320, height : 240, quality : 90},
+
+		flash_swf_url : 'http://rawgithub.com/moxiecode/moxie/master/bin/flash/Moxie.cdn.swf',
+		silverlight_xap_url : 'http://rawgithub.com/moxiecode/moxie/master/bin/silverlight/Moxie.cdn.xap'
+	});
+});
+*/
+
+
+
+
+
+
 
 
 // TAGS functions

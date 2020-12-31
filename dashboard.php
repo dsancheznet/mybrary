@@ -6,9 +6,9 @@
 	//Read the variables from session storage
 	$tmpUsername = $_SESSION['username'];
 	$tmpPassword = $_SESSION['md5pass'];
-	//Is the user logged in on do we have valid credentials?
+	//Is the user not logged in and do we have invalid credentials?
 	if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) or ($tmpUsername=="") or $tmpPassword=="") {
-		//NO : Go back to the login form
+		//YES : Go back to the login form
 		header("Location: login.php");
 		//Stop script (not neccessary but recommended)
 		exit();
@@ -17,7 +17,6 @@
 	$myDB = new Database( 'db/mybrary.db' );
 //HTML code...
 ?>
-
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -26,17 +25,20 @@
 		<!-- CSS FILES -->
 		<!-- UIkit CSS -->
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.5/dist/css/uikit.min.css" />
-
+		<!-- CUSTOM CSS -->
+		<link rel="stylesheet" type="text/css" href="css/dashboard.css">
 		<!-- plupload JS -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/plupload/3.1.2/plupload.full.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="css/dashboard.css">
 	</head>
+
+<!-- * * * * * * * * * * * BODY * * * * * * * * * * -->
+
 	<body onload="PopulatePage()">
 <!-- HIDDEN FIELDS -->
 		<input type="hidden" id="tag-filter" value="">
 		<input type="hidden" id="type-filter" value="">
 <!-- /HIDDEN FIELDS -->
-		<!--HEADER-->
+<!-- HEADER -->
 		<header id="top-head" class="uk-position-fixed">
 			<div class="uk-container uk-container-expand uk-background-primary">
 				<nav id="search-bar" class="uk-navbar uk-light uk-padding-small" data-uk-navbar="mode:click; duration: 250">
@@ -53,8 +55,10 @@ Y88b  d88P 888         d8888888888 888  T88b  Y88b  d88P 888    888 888   d88P d
 				</nav>
 			</div>
 		</header>
-		<!--/HEADER-->
-		<!-- LEFT BAR -->
+<!--/HEADER-->
+
+
+<!-- LEFT BAR -->
 		<aside id="left-col" class="uk-light uk-visible@m">
 			<div class="left-logo uk-flex uk-flex-middle">
 				<img class="custom-logo" src="img/logo-dashboard.svg" width="200px" alt="">
@@ -131,8 +135,10 @@ Y88b  d88P  888   888  .d88P 888            888   d8888888888 Y88b  d88P Y88b  d
 
 			</div>
 		</aside>
-		<!-- /LEFT BAR -->
-		<!-- CONTENT -->
+<!-- /LEFT BAR -->
+
+
+<!-- CONTENT -->
 		<div id="content" data-uk-height-viewport="expand: true">
 			<div class="uk-container uk-container-expand">
 				<div id="info-table" class="uk-grid uk-grid-divider uk-grid-medium uk-child-width-1-3" data-uk-grid>
@@ -170,10 +176,12 @@ Y88b  d88P  888   888  .d88P 888            888   d8888888888 Y88b  d88P Y88b  d
 				</footer>
 			</div>
 		</div>
-		<!-- /CONTENT -->
+<!-- /CONTENT -->
 
-		<!-- MODAL DIALOG SKELETON -->
+
+<!-- MODAL DIALOG SKELETON -->
 		<div id="modal-dash" uk-modal>
+		    <div id="modal-body" class="uk-modal-dialog uk-modal-body">
 <!--
 888b     d888  .d88888b.  8888888b.        d8888 888      888888b.    .d88888b.  8888888b. Y88b   d88P
 8888b   d8888 d88P" "Y88b 888  "Y88b      d88888 888      888  "88b  d88P" "Y88b 888  "Y88b Y88b d88P
@@ -184,17 +192,15 @@ Y88b  d88P  888   888  .d88P 888            888   d8888888888 Y88b  d88P Y88b  d
 888   "   888 Y88b. .d88P 888  .d88P d8888888888 888      888   d88P Y88b. .d88P 888  .d88P    888
 888       888  "Y88888P"  8888888P" d88P     888 88888888 8888888P"   "Y88888P"  8888888P"     888
 -->
-		    <div id="modal-body" class="uk-modal-dialog uk-modal-body">
-
 		    </div>
 		</div>
-		<!-- /MODAL DIALOG SKELETON -->
+<!-- /MODAL DIALOG SKELETON -->
 
-		<!-- JS FILES -->
+<!-- UIKIT JS FILES -->
 		<script src="https://cdn.jsdelivr.net/npm/uikit@latest/dist/js/uikit.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/uikit@latest/dist/js/uikit-icons.min.js"></script>
-		<!-- CUSTOM SCRIPT -->
+<!-- CUSTOM JS FILES -->
 		<script src="js/mybrary.js"></script>
-		<!-- /CUSTOM SCRIPT -->
+<!-- /CUSTOM JS FILES -->
 	</body>
 </html>
