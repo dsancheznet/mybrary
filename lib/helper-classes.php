@@ -90,6 +90,10 @@
       return $this->CONN->exec('DELETE FROM tags WHERE id="'.$tmpID.'"') | $this->CONN->exec('DELETE FROM tags2books WHERE tag="'.$tmpID.'"');
     }
 
+    function setNewBook( $tmpUUID, $tmpName, $tmpType, $tmpUploader ) {
+      return $this->CONN->exec('INSERT INTO books (uuid, title, type, uploader) VALUES ("'.$tmpUUID.'", "'.$tmpName.'", "'.$tmpType.'", "'.$tmpUploader.'" )');
+    }
+
     function getBookCount() {
       $tmpDataset = $this->CONN->querySingle( 'SELECT COUNT(*) as count FROM books' );
       return $tmpDataset;
