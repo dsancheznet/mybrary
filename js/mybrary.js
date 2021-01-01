@@ -129,53 +129,11 @@ function ConfigureUpload() {
               setTimeout(function () {
                   bar.setAttribute('hidden', 'hidden');
               }, 1000);
-
-              alert('Upload Completed');
           }
 
       });
 
 }
-
-
-/*
-$(document).ready(function() {
-	// Setup html5 version
-	$("#uploader").pluploadQueue({
-		// General settings
-		runtimes : 'html5,html4',
-
-		// Fake server response here
-		// url : '../upload.php',
-		url: "/echo/json",
-
-		max_file_size : '500mb',
-		chunks : {
-			size: '1mb',
-			send_chunk_number: false // set this to true, to send chunk and total chunk numbers instead of offset and total bytes
-		},
-		rename : true,
-		dragdrop: true,
-		filters : [
-    {title : "PDF files", extensions : "pdf"},
-    {title : "ePub files", extensions : "epub"},
-    {title : "Markdown files", extensions : "md"},
-		{title : "Plain Text files", extensions : "txt"}
-		],
-
-		// Resize images on clientside if we can
-		resize : {width : 320, height : 240, quality : 90},
-
-		flash_swf_url : 'http://rawgithub.com/moxiecode/moxie/master/bin/flash/Moxie.cdn.swf',
-		silverlight_xap_url : 'http://rawgithub.com/moxiecode/moxie/master/bin/silverlight/Moxie.cdn.xap'
-	});
-});
-*/
-
-
-
-
-
 
 
 
