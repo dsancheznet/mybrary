@@ -50,7 +50,5 @@
     } else {
       echo "Error: No filename";
     }
-    echo "<br />";
-    print_r( $_FILES['files'] );
   }
 ?>
