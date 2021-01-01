@@ -23,7 +23,6 @@
       exit();
     }
   }
-
 ?>
 
 <button class="uk-modal-close-default" type="button" uk-close></button>
@@ -31,9 +30,7 @@
 <h4>· User Data ·</h4>
 
 <img id="avatar-image" class="uk-align-center" src="../img/avatars/<?php echo $myDB->avatar( $tmpUserToModify ); ?>" width="100px;">
-
-<form>
-
+<!--<form>-->
   <label class="uk-form-label" for="form-stacked-select">Avatar</label>
     <select id="avatar-selector" class="uk-select"onchange="AvatarChanged()">
 <?php
@@ -46,12 +43,12 @@
 ?>
     </select>
 
-
     <div class="uk-margin">
       <label class="uk-form-label" for="form-stacked-select">Username</label>
         <div class="uk-inline uk-width-1-1">
             <span class="uk-form-icon" uk-icon="icon: user"></span>
-            <input class="uk-input" type="text" value="<?php echo $tmpUserToModify?>">
+            <input class="uk-input<?php
+            if ( ( (int)$myDB->role( $tmpUsername ) & (int)4 ) == 0 )  { echo " uk-disabled"; }?>" type="text" value="<?php echo $tmpUserToModify?>">
         </div>
     </div>
 
@@ -98,4 +95,4 @@
 ?>
     <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-remove-bottom uk-margin-top" onclick=""><span class="uk-margin-small-right" uk-icon="download"></span>Save</button>
     </div>
-</form>
+<!--</form>-->

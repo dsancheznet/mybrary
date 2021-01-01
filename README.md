@@ -70,6 +70,6 @@ Every book, can only exist once. It is *not* possible to have different copies o
 
 ## TODO
 
-[ ] - Finish Upload
-[ ] - Finish Tag Editor
-[ ] - Include https://mozilla.github.io/pdf.js/
+- [ ] Finish Upload
+- [ ] Finish Tag Editor
+- [ ] Include https://mozilla.github.io/pdf.js/
