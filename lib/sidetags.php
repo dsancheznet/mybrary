@@ -20,7 +20,10 @@
 
   $tmpTags = $myDB->getTagList();
   foreach ($tmpTags as $tmpArray) {
-    echo '<li><a title="'.$tmpArray['caption'].'" onclick="ReloadSection( \'book-list\', \'booklist.php\', \'tag='.$tmpArray['id'].'\')">'.$tmpArray['caption'].'</a></li>';
+    echo '<li>
+          <a title="'.$tmpArray['caption'].'" onclick="ReloadSection( \'book-list\', \'booklist.php\', \'tag='.$tmpArray['id'].'\')">'.$tmpArray['caption'].'
+          </a>
+          </li>';
   }
 
 ?>

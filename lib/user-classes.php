@@ -38,7 +38,12 @@ include_once('helper-classes.php');
   }
 
   function insertBookMenu( $tmpID ) {
-    return '<ul class="uk-iconnav"><li><a href="#" uk-icon="icon: file-pdf"></a></li><li><a href="#" uk-icon="icon: file-edit"></a></li><li><a href="#" uk-icon="icon: tag"></a></li><li><a href="#" uk-icon="icon: download"></a></li><li><a href="#" uk-icon="icon: trash"></a></li></ul>';
+    return '<ul class="uk-iconnav">
+    <li><a uk-icon="icon: file-pdf"></a></li>
+    <li><a uk-icon="icon: cloud-download"></a></li>
+    <li><a uk-icon="icon: file-text"></a></li>
+    <li><a uk-icon="icon: trash" onclick="DeleteBookWithId('.$tmpID.')"></a></li>
+    </ul>';
   }
 
   function insertUserMenu( $tmpUserRole, $tmpUsername ) {

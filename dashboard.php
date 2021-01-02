@@ -103,33 +103,26 @@ Y88b  d88P  888   888  .d88P 888            888   d8888888888 Y88b  d88P Y88b  d
 					<li class="uk-parent">
 						<a href="#"><span data-uk-icon="icon: folder" class="uk-margin-small-right"></span>Types</a>
 						<ul class="uk-nav-sub">
-							<li><a href="<?php echo $_SERVER['PHP_SELF']."?tp=pdf"; ?>">PDF</a></li>
-							<li><a href="<?php echo $_SERVER['PHP_SELF']."?tp=epub"; ?>">ePUB</a></li>
-							<li><a href="<?php echo $_SERVER['PHP_SELF']."?tp=txt"; ?>">Plain Text</a></li>
-							<li><a href="<?php echo $_SERVER['PHP_SELF']."?tp=md"; ?>">Markdown</a></li>
+							<li><a onclick="RegisterTypeSearch('pdf')">PDF</a></li>
+							<li><a onclick="RegisterTypeSearch('epub')">ePUB</a></li>
+							<li><a onclick="RegisterTypeSearch('txt')">Plain Text</a></li>
+							<li><a onclick="RegisterTypeSearch('md')">Markdown</a></li>
 						</ul>
 					</li>
 					<li><a onclick="ResetFilters()"><span data-uk-icon="icon: refresh" class="uk-margin-small-right"></span>Reset Filters</a></li>
 				</ul>
-				<div class="left-content-box uk-margin-top">
+				<div id="side-library" class="left-content-box uk-margin-top">
 
-						<h5>Library</h5>
-						<div>
-							<span class="uk-text-small">PDF <small>(<?php echo $myDB->getTypeCount('pdf')?>)</small></span>
-							<progress class="uk-progress primary" value="<?php echo $myDB->getTypeCount('pdf')?>" max="<?php echo $myDB->getBookCount();?>"></progress>
-						</div>
-						<div>
-							<span class="uk-text-small">EPUB <small>(<?php echo $myDB->getTypeCount('epub')?>)</small></span>
-							<progress class="uk-progress primary" value="<?php echo $myDB->getTypeCount('epub')?>" max="<?php echo $myDB->getBookCount();?>"></progress>
-						</div>
-						<div>
-							<span class="uk-text-small">TXT <small>(<?php echo $myDB->getTypeCount('txt')?>)</small></span>
-							<progress class="uk-progress primary" value="<?php echo $myDB->getTypeCount('txt')?>" max="<?php echo $myDB->getBookCount();?>"></progress>
-						</div>
-						<div>
-							<span class="uk-text-small">MD <small>(<?php echo $myDB->getTypeCount('md')?>)</small></span>
-							<progress class="uk-progress primary" value="<?php echo $myDB->getTypeCount('md')?>" max="<?php echo $myDB->getBookCount();?>"></progress>
-						</div>
+<!--
+ .d8888b. 8888888 8888888b.  8888888888 888      8888888 888888b.   8888888b.         d8888 8888888b. Y88b   d88P
+d88P  Y88b  888   888  "Y88b 888        888        888   888  "88b  888   Y88b       d88888 888   Y88b Y88b d88P
+Y88b.       888   888    888 888        888        888   888  .88P  888    888      d88P888 888    888  Y88o88P
+ "Y888b.    888   888    888 8888888    888        888   8888888K.  888   d88P     d88P 888 888   d88P   Y888P
+    "Y88b.  888   888    888 888        888        888   888  "Y88b 8888888P"     d88P  888 8888888P"     888
+		  "888  888   888    888 888        888        888   888    888 888 T88b     d88P   888 888 T88b      888
+Y88b  d88P  888   888  .d88P 888        888        888   888   d88P 888  T88b   d8888888888 888  T88b     888
+ "Y8888P" 8888888 8888888P"  8888888888 88888888 8888888 8888888P"  888   T88b d88P     888 888   T88b    888
+-->
 
 				</div>
 
@@ -204,3 +197,4 @@ Y88b  d88P  888   888  .d88P 888            888   d8888888888 Y88b  d88P Y88b  d
 <!-- /CUSTOM JS FILES -->
 	</body>
 </html>
+<!-- Ansi Regular and  -->

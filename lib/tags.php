@@ -26,7 +26,7 @@ if ( intdiv( (int)$tmpUserRole & (int)2, 2) ) {
 
 
 <button class="uk-modal-close-default" type="button" uk-close></button>
-<h4>· Tags ·</h4>
+<h4>· Tags · <span uk-icon="plus-circle" onclick="ReadAndCreateTag()"></span></h4>
 
 <table class="uk-table uk-table-striped uk-text-small uk-table-hover">
     <thead>

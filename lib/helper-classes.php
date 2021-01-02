@@ -3,7 +3,13 @@
   class Database {
 
     private $CONN = "";
-
+/*
+██    ██ ███████ ███████ ██████  ███████ 
+██    ██ ██      ██      ██   ██ ██      
+██    ██ ███████ █████   ██████  ███████ 
+██    ██      ██ ██      ██   ██      ██ 
+ ██████  ███████ ███████ ██   ██ ███████ 
+*/
     function __construct( ) {
       $this->CONN = new SQLite3( 'db/mybrary.db' );
     }
@@ -31,7 +37,6 @@
 
     function avatar( $tmpUsername ) {
       $tmpDataset = $this->CONN->querySingle( 'SELECT avatar FROM users WHERE username="'.$tmpUsername.'"' );
-      error_log( "Dataset ".$tmpDataset );
       return $tmpDataset;
     }
 
@@ -49,9 +54,37 @@
       return $tmpDataArray;
     }
 
+/*
+███████ ██ ██      ███████ ███████ 
+██      ██ ██      ██      ██      
+█████   ██ ██      █████   ███████ 
+██      ██ ██      ██           ██ 
+██      ██ ███████ ███████ ███████ 
+*/
+
     function getTypeCount( $tmpType = "pdf" ) {
       $tmpDataset = $this->CONN->querySingle( 'SELECT COUNT(*) as count FROM books WHERE type="'.$tmpType.'"' );
       return $tmpDataset;
+    }
+
+/*
+████████  █████   ██████  ███████ 
+   ██    ██   ██ ██       ██      
+   ██    ███████ ██   ███ ███████ 
+   ██    ██   ██ ██    ██      ██ 
+   ██    ██   ██  ██████  ███████ 
+*/
+
+    function setNewTag( $tmpCaption ) {
+      return $this->CONN->exec('INSERT INTO tags (caption) VALUES ("'.$tmpCaption.'")');
+    }
+
+    function setTagCaption( $tmpID, $tmpCaption ) {
+      return $this->CONN->exec( 'UPDATE tags SET caption="'.$tmpCaption.'" WHERE id='.$tmpID );
+    }
+
+    function setTagFor( $tmpTagID, $tmpBookID ) {
+      return $this->CONN->exec( 'INSERT INTO tags2books (book, tag) VALUES ( "'.$tmpBookID.'","'.$tmpTagID.'" )');
     }
 
     function getTagCount() {
@@ -68,7 +101,7 @@
       return $tmpDataArray;
     }
 
-    function getTagName( $tmpTagNumber ) {
+    function getTagCaption( $tmpTagNumber ) {
       $tmpDataset = $this->CONN->querySingle( 'SELECT caption FROM tags WHERE id='.$tmpTagNumber );
       return $tmpDataset;
     }
@@ -77,18 +110,22 @@
       $tmpDataset = $this->CONN->query( 'SELECT tag FROM tags2books WHERE book='.$tmpID );
       $tmpDataArray = [];
       while( $tmpResult = $tmpDataset->fetchArray()) {
-        array_push($tmpDataArray, $this->getTagName( $tmpResult['tag'] ) );
+        array_push($tmpDataArray, $this->getTagCaption( $tmpResult['tag'] ) );
       }
       return $tmpDataArray;
-    }
-
-    function setTagCaption( $tmpID, $tmpCaption ) {
-      return $this->CONN->exec( 'UPDATE tags SET caption="'.$tmpCaption.'" WHERE id='.$tmpID );
     }
 
     function eraseTagFromDB( $tmpID ) {
       return $this->CONN->exec('DELETE FROM tags WHERE id="'.$tmpID.'"') | $this->CONN->exec('DELETE FROM tags2books WHERE tag="'.$tmpID.'"');
     }
+
+/*
+██████   ██████   ██████  ██   ██ ███████ 
+██   ██ ██    ██ ██    ██ ██  ██  ██      
+██████  ██    ██ ██    ██ █████   ███████ 
+██   ██ ██    ██ ██    ██ ██  ██       ██ 
+██████   ██████   ██████  ██   ██ ███████
+*/
 
     function setNewBook( $tmpUUID, $tmpName, $tmpType, $tmpUploader ) {
       return $this->CONN->exec('INSERT INTO books (uuid, title, type, uploader) VALUES ("'.$tmpUUID.'", "'.$tmpName.'", "'.$tmpType.'", "'.$tmpUploader.'" )');
@@ -100,28 +137,19 @@
     }
 
     function getBookList( $tmpType="", $tmpSearchTerm="", $tmpTag="" ) {
-        $tmpBaseSearch = "SELECT * FROM books ";
-        $tmpBaseSearch.= ($tmpTag<>"")?"INNER JOIN tags2books ON tags2books.book=books.id ":"";
-        //SELECT * FROM books INNER JOIN tags2books ON tags2books.book=books.id WHERE books.title LIKE "%dumm%" AND books.type="epub" AND tag="1"
-        $tmpBaseArray = [];
-        if ( $tmpTag<>"" ) { $tmpBaseArray[] = "tag='".$tmpTag."'"; }
-        if ( $tmpType<>"" ) { $tmpBaseArray[] = "type='".$tmpType."'"; }
-        if ( $tmpSearchTerm<>"" ) { $tmpBaseArray[] = "title LIKE '%".$tmpSearchTerm."%'"; }
-        $tmpBaseSearch.=((count($tmpBaseArray)>0)?"WHERE ":"").implode(" AND ", $tmpBaseArray);
-
-      error_log("Searching for...".$tmpBaseSearch);
+      $tmpBaseSearch = "SELECT * FROM books ";
+      $tmpBaseSearch.= ($tmpTag<>"")?"INNER JOIN tags2books ON tags2books.book=books.id ":"";
+      $tmpBaseArray = [];
+      if ( $tmpTag<>"" ) { $tmpBaseArray[] = "tag='".$tmpTag."'"; }
+      if ( $tmpType<>"" ) { $tmpBaseArray[] = "type='".$tmpType."'"; }
+      if ( $tmpSearchTerm<>"" ) { $tmpBaseArray[] = "title LIKE '%".$tmpSearchTerm."%'"; }
+      $tmpBaseSearch.=((count($tmpBaseArray)>0)?"WHERE ":"").implode(" AND ", $tmpBaseArray);
       $tmpDataset = $this->CONN->query( $tmpBaseSearch );
       $tmpDataArray = [];
       while( $tmpResult = $tmpDataset->fetchArray()) {
         array_push($tmpDataArray, $tmpResult );
       }
-
       return $tmpDataArray;
-    }
-
-    function bookHasCover( $tmpUUID ) {
-      error_log( "Searching in ".getcwd()." for ".$tmpUUID.".jpg");
-      return file_exists( 'data/covers/'.$tmpUUID.'.jpg' );
     }
 
     function getBookUUID( $tmpID ) {
@@ -157,6 +185,16 @@
     function getBookUploader( $tmpID ) {
       $tmpDataset = $this->CONN->querySingle( 'SELECT uploader FROM books WHERE id="'.$tmpID.'"' );
       return strtolower($tmpDataset);
+    }
+
+    function eraseBookFromDB( $tmpID ) {
+      $tmpResult = $this->CONN->querySingle('SELECT uuid, type FROM books WHERE id="'.$tmpID.'"', true );
+      unlink( 'data/books/'.$tmpResult['uuid'].".".$tmpResult['type'] );
+      return ( $this->CONN->exec('DELETE FROM books WHERE id="'.$tmpID.'"') & $this->CONN->exec('DELETE FROM tags2books WHERE book="'.$tmpID.'"') );
+    }
+
+    function bookHasCover( $tmpUUID ) {
+      return file_exists( 'data/covers/'.$tmpUUID.'.jpg' );
     }
 
   }

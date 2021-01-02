@@ -38,7 +38,4 @@
 
 <progress id="js-progressbar" class="uk-progress" value="0" max="100" hidden></progress>
 
-<script>
-
-
-</script>
+<div id="result-panel"></div>

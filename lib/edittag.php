@@ -34,9 +34,15 @@ if ( intdiv( (int)$tmpUserRole & (int)2, 2) ) {
             echo 'ok';
           } else {
             echo 'error';
-          }          break;
+          }
+          break;
       case "create":
-          error_log($tmpUsername+" creates tag ".$_POST['id']."/".$_POST['caption']);
+          error_log($tmpUsername+" creates tag ".$_POST['caption']);
+          if ( $myDB->setNewTag($_POST['caption']) ) {
+            echo 'ok';
+          } else {
+            echo 'error';
+          }
           break;
   }
 }

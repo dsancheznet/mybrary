@@ -18,7 +18,7 @@ if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
   exit();
 }
 
-if ( $myDB->getBookCount()>1 ) {
+if ( $myDB->getBookCount() > 0 ) {
 	$tmpBooks = $myDB->getBookList( $_POST['type'], $_POST['search'], $_POST['tag'] );
 	foreach ( $tmpBooks as $tmpBook ) { //Attention: variable names are different (plural vs singular)
 			echo '<div><div class="uk-card uk-card-large uk-card-default uk-padding-small" style="min-width: 200px;"><div class="uk-card-media-top uk-padding-small ">';

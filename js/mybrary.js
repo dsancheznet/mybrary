@@ -1,29 +1,26 @@
-// GENERAL PAGE PREPARATIONS
+/*
+██ ███    ██ ██ ████████ 
+██ ████   ██ ██    ██    
+██ ██ ██  ██ ██    ██ 
+██ ██  ██ ██ ██    ██ 
+██ ██   ████ ██    ██ 
+*/
 
 function PopulatePage() {
   ReloadSection("side-tags", "sidetags.php");
   ReloadSection("book-list", "booklist.php");
   ReloadSection("info-table", "infotable.php");
   ReloadSection("search-bar", "searchbar.php");
-  //setTimeout(function(){ OverrideSubmit() }, 2000);
+  ReloadSection("side-library", "sidelibrary.php");
 }
 
-  function OverrideSubmit() {
-    // Attach the event handler to the form element
-    document.getElementById("search-form").addEventListener('submit', e => {
-      event.preventDefault();
-      document.getElementById("search-active").hidden = false;
-      document.getElementById("search-term").innerHTML = document.getElementById("search-field").value;
-      ReloadSection("book-list", "booklist.php", "search="+document.getElementById("search-term").innerHTML);
-      ReloadSection("search-bar", "searchbar.php", "search="+document.getElementById("search-term").innerHTML);
-      document.getElementById("search-field").value="";
-      //UIkit.toggle(document.getElementById('search-modal')).toggle();
-      alert('done');
-        });//.{ once: true }
-  }
-
-
-// PERSONAL INFO FUNCTIONS
+/*
+██████  ███████ ██████  ███████  ██████  ███    ██  █████  ██ 
+██   ██ ██      ██   ██ ██      ██    ██ ████   ██ ██   ██ ██ 
+██████  █████   ██████  ███████ ██    ██ ██ ██  ██ ███████ ██ 
+██      ██      ██   ██      ██ ██    ██ ██  ██ ██ ██   ██ ██ 
+██      ███████ ██   ██ ███████  ██████  ██   ████ ██   ██ ███████
+*/
 
 function ShowPersonalInfoForm( tmpName ) {
   let xhr = new XMLHttpRequest();
@@ -60,8 +57,13 @@ function SaveUserData() {
   };
 }
 
-
-// UPLOAD FUNCTIONS
+/*
+██    ██ ██████  ██       ██████   █████  ██████ 
+██    ██ ██   ██ ██      ██    ██ ██   ██ ██   ██ 
+██    ██ ██████  ██      ██    ██ ███████ ██   ██ 
+██    ██ ██      ██      ██    ██ ██   ██ ██   ██ 
+ ██████  ██      ███████  ██████  ██   ██ ██████ 
+*/
 
 function ShowUploadForm() {
   let xhr = new XMLHttpRequest();
@@ -77,14 +79,10 @@ function ShowUploadForm() {
 
 
 function ConfigureUpload() {
-
       var bar = document.getElementById('js-progressbar');
-
       UIkit.upload('.js-upload', {
-
           url: 'lib/chunk.php',
           multiple: true,
-
           beforeSend: function () {
               console.log('beforeSend', arguments);
           },
@@ -100,7 +98,6 @@ function ConfigureUpload() {
           complete: function () {
               console.log('complete', arguments);
           },
-
           loadStart: function (e) {
               console.log('loadStart', arguments);
 
@@ -108,26 +105,28 @@ function ConfigureUpload() {
               bar.max = e.total;
               bar.value = e.loaded;
           },
-
           progress: function (e) {
               console.log('progress', arguments);
 
               bar.max = e.total;
               bar.value = e.loaded;
           },
-
           loadEnd: function (e) {
               console.log('loadEnd', arguments);
 
               bar.max = e.total;
               bar.value = e.loaded;
           },
-
           completeAll: function () {
               console.log('completeAll', arguments);
-
               setTimeout(function () {
                   bar.setAttribute('hidden', 'hidden');
+                  ReloadSection("side-tags", "sidetags.php");
+                  ReloadSection("book-list", "booklist.php");
+                  ReloadSection("info-table", "infotable.php");
+                  ReloadSection("search-bar", "searchbar.php");
+                  ReloadSection("side-library", "sidelibrary.php");
+                  document.getElementById("result-panel").innerHTML = "ok";
               }, 1000);
           }
 
@@ -135,9 +134,13 @@ function ConfigureUpload() {
 
 }
 
-
-
-// TAGS functions
+/*
+████████  █████   ██████  ███████ 
+   ██    ██   ██ ██       ██      
+   ██    ███████ ██   ███ ███████ 
+   ██    ██   ██ ██    ██      ██ 
+   ██    ██   ██  ██████  ███████ 
+*/
 
 function ShowTagAdminForm() {
   let xhr = new XMLHttpRequest();
@@ -193,8 +196,34 @@ function DeleteTag( tagID, tagCaption ) {
   }
 }
 
+function ReadAndCreateTag() {
+  let xhr = new XMLHttpRequest();
+  var tagCaption = prompt("Please enter new tag name...");
+  if (tagCaption != null) {
+    xhr.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        if ( this.responseText == "error" ) {
+          alert('Unknown Error.');
+        } else {
+          ReloadSection("info-table", "infotable.php");
+          ReloadSection("side-tags", "sidetags.php");
+          ShowTagAdminForm();
+      }
+    }
+  };
+  xhr.open("POST", "lib/edittag.php", true);
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhr.send("function=create&caption="+tagCaption);
+  }
+}
 
-// BOOK FUNCTIONS
+/*
+██████   ██████   ██████  ██   ██ ███████ 
+██   ██ ██    ██ ██    ██ ██  ██  ██      
+██████  ██    ██ ██    ██ █████   ███████ 
+██   ██ ██    ██ ██    ██ ██  ██       ██ 
+██████   ██████   ██████  ██   ██ ███████ 
+*/
 
 function ResetFilters() {
   document.getElementById("tag-filter").value="";
@@ -203,15 +232,48 @@ function ResetFilters() {
   ResetSearchTerm();
 }
 
+function DeleteBookWithId( bookID ) {
+  let xhr = new XMLHttpRequest();
+  if (confirm("Sure you want to delete this book?")) {
+    xhr.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        if ( this.responseText == "error" ) {
+          alert('Unknown Error.');
+        } else {
+          ReloadSection("info-table", "infotable.php");
+          ReloadSection("book-list", "booklist.php");
+          ReloadSection("side-library", "sidelibrary.php");
+        }
+      }
+    };
+    xhr.open("POST", "lib/delete.php", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send("bookid="+bookID);
+  } else {
+    return;
+  }
+}
 
-// SEARCH FINCTIONS
+/*
+███████ ███████  █████  ██████   ██████ ██   ██ 
+██      ██      ██   ██ ██   ██ ██      ██   ██ 
+███████ █████   ███████ ██████  ██      ███████ 
+     ██ ██      ██   ██ ██   ██ ██      ██   ██ 
+███████ ███████ ██   ██ ██   ██  ██████ ██   ██ 
+*/
 
 function ResetSearchTerm() {
   document.getElementById('search-active').hidden = true;
   document.getElementById("search-term").value="";
+  document.getElementById("tag-filter").value="";
+  document.getElementById("type-filter").value="";
   ReloadSection("book-list", "booklist.php");
 }
 
+function  RegisterTypeSearch( typeToSearch ) {
+  document.getElementById('type-filter').value = typeToSearch;
+  ExecuteSearch();
+}
 
 function ShowSearch() {
   let xhr = new XMLHttpRequest();
@@ -229,13 +291,34 @@ function CloseAndSendSearch() {
   if (document.getElementById('search-field').value!="") {
     document.getElementById('search-active').hidden = false;
     document.getElementById('search-term').innerHTML = document.getElementById('search-field').value;
-    ReloadSection("book-list", "booklist.php");
+    ExecuteSearch();
   }
   UIkit.toggle(document.getElementById('modal-dash')).toggle();
 }
 
+function ExecuteSearch() {
+  var postParameters = "";
+  if ( document.getElementById('type-filter').value!="" ) {
+   postParameters = "type="+document.getElementById('type-filter').value;
+  }
+  if ( document.getElementById('search-term').innerHTML!="" ) {
+    if ( postParameters != "" ) { postParameters += "?search"+document.getElementById('search-term').innerHTML }
+    else { postParameters = "search="+document.getElementById('search-term').innerHTML }
+  }
+  if ( document.getElementById('tag-filter').value!="" ) {
+    if ( postParameters != "" ) { postParameters += "?tag"+document.getElementById('tag-filter').innerHTML }
+    else { postParameters = "tag="+document.getElementById('tag-filter').value }
+  }
+  ReloadSection("book-list", "booklist.php", postParameters);
+}
 
-// GENERAL FUNCTIONS
+/*
+ ██████  ███████ ███    ██ ███████ ██████   █████  ██ 
+██       ██      ████   ██ ██      ██   ██ ██   ██ ██ 
+██   ███ █████   ██ ██  ██ █████   ██████  ███████ ██ 
+██    ██ ██      ██  ██ ██ ██      ██   ██ ██   ██ ██ 
+ ██████  ███████ ██   ████ ███████ ██   ██ ██   ██ ███████ 
+*/
 
 function ReloadSection( sectionID, sectionPHP, postParameters="" ) {
   let xhr = new XMLHttpRequest();
