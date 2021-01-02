@@ -7,11 +7,11 @@
 */
 
 function PopulatePage() {
-  ReloadSection("side-tags", "sidetags.php");
-  ReloadSection("book-list", "booklist.php");
-  ReloadSection("info-table", "infotable.php");
   ReloadSection("search-bar", "searchbar.php");
+  ReloadSection("side-tags", "sidetags.php");
+  ReloadSection("info-table", "infotable.php");
   ReloadSection("side-library", "sidelibrary.php");
+  ReloadSection("book-list", "booklist.php");
 }
 
 /*
@@ -29,7 +29,7 @@ function ShowPersonalInfoForm( tmpName ) {
       document.getElementById("modal-body").innerHTML = this.responseText;
     }
   };
-  xhr.open("GET", "lib/persinfo.php?nm="+tmpName, true);
+  xhr.open("GET", "lib/modalpersinfo.php?nm="+tmpName, true);
   xhr.send();
 }
 
@@ -49,12 +49,7 @@ function AvatarChanged() {
 }
 
 function SaveUserData() {
-  let xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("modal-body").innerHTML = this.responseText;
-    }
-  };
+
 }
 
 /*
@@ -228,8 +223,7 @@ function ReadAndCreateTag() {
 function ResetFilters() {
   document.getElementById("tag-filter").value="";
   document.getElementById("type-filter").value="";
-  ReloadSection("book-list", "booklist.php");
-  ResetSearchTerm();
+  ExecuteSearch();
 }
 
 function DeleteBookWithId( bookID ) {
@@ -254,6 +248,38 @@ function DeleteBookWithId( bookID ) {
   }
 }
 
+function ShowBookEditModal( bookID ) {
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("modal-body").innerHTML = this.responseText;
+    }
+  };
+  xhr.open("POST", "lib/modalbook.php", true);
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhr.send("bookid="+bookID);
+}
+
+function SaveBookData( bookID ) {
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("save-message").hidden = false;
+      document.getElementById("save-paragraph").innerHTML = this.responseText;
+    }
+  };
+  xhr.open("POST", "lib/editbook.php", true);
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhr.send(
+    "bookid="+bookID+
+    "&title="+document.getElementById("bookform-title").value+
+    "&author="+document.getElementById("bookform-author").value+
+    "&summary="+document.getElementById("bookform-summary").value+
+    "&isbn="+document.getElementById("bookform-isbn").value+
+    "&tags="+document.getElementById("bookform-tags").value );
+  ExecuteSearch();
+}
+
 /*
 ███████ ███████  █████  ██████   ██████ ██   ██ 
 ██      ██      ██   ██ ██   ██ ██      ██   ██ 
@@ -263,15 +289,18 @@ function DeleteBookWithId( bookID ) {
 */
 
 function ResetSearchTerm() {
+  document.getElementById('search-term').innerHTML="";
   document.getElementById('search-active').hidden = true;
-  document.getElementById("search-term").value="";
-  document.getElementById("tag-filter").value="";
-  document.getElementById("type-filter").value="";
-  ReloadSection("book-list", "booklist.php");
+  ExecuteSearch();
 }
 
 function  RegisterTypeSearch( typeToSearch ) {
   document.getElementById('type-filter').value = typeToSearch;
+  ExecuteSearch();
+}
+
+function  RegisterTagSearch( tagToSearch ) {
+  document.getElementById('tag-filter').value = tagToSearch;
   ExecuteSearch();
 }
 
@@ -298,17 +327,21 @@ function CloseAndSendSearch() {
 
 function ExecuteSearch() {
   var postParameters = "";
+
   if ( document.getElementById('type-filter').value!="" ) {
    postParameters = "type="+document.getElementById('type-filter').value;
   }
+
   if ( document.getElementById('search-term').innerHTML!="" ) {
-    if ( postParameters != "" ) { postParameters += "?search"+document.getElementById('search-term').innerHTML }
+    if ( postParameters != "" ) { postParameters += "&search="+document.getElementById('search-term').innerHTML }
     else { postParameters = "search="+document.getElementById('search-term').innerHTML }
   }
+
   if ( document.getElementById('tag-filter').value!="" ) {
-    if ( postParameters != "" ) { postParameters += "?tag"+document.getElementById('tag-filter').innerHTML }
+    if ( postParameters != "" ) { postParameters += "&tag="+document.getElementById('tag-filter').value }
     else { postParameters = "tag="+document.getElementById('tag-filter').value }
   }
+
   ReloadSection("book-list", "booklist.php", postParameters);
 }
 
@@ -325,6 +358,9 @@ function ReloadSection( sectionID, sectionPHP, postParameters="" ) {
   xhr.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       document.getElementById(sectionID).innerHTML = this.responseText;
+      if ( sectionID == 'book-list' ) {
+        document.getElementById('book-count').innerHTML = document.getElementById('books-shown').value;
+      }
     }
   };
   if ( postParameters == "" ) {

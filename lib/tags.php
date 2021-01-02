@@ -26,7 +26,7 @@ if ( intdiv( (int)$tmpUserRole & (int)2, 2) ) {
 
 
 <button class="uk-modal-close-default" type="button" uk-close></button>
-<h4>· Tags · <span uk-icon="plus-circle" onclick="ReadAndCreateTag()"></span></h4>
+<h4>· Tags ·</span></h4>
 
 <table class="uk-table uk-table-striped uk-text-small uk-table-hover">
     <thead>
@@ -38,7 +38,7 @@ if ( intdiv( (int)$tmpUserRole & (int)2, 2) ) {
     </thead>
     <tbody>
 <?php
-    foreach ( $tmpTags as $tmpTag ) {
+    foreach ( $tmpTags as $tmpTag ) { //Iterate over available tags; attention: variable names are different (plural vs singular)
       echo '<tr>';
         echo '<td> '.$tmpTag['id'].' </td>';
         echo '<td>'.$tmpTag['caption'].'</div> </td>';
@@ -48,6 +48,9 @@ if ( intdiv( (int)$tmpUserRole & (int)2, 2) ) {
 ?>
     </tbody>
 </table>
+
+<button class="uk-button uk-button-primary uk-width-1-1 uk-padding-small uk-margin-remove-bottom uk-margin-top" onclick="ReadAndCreateTag()"><span uk-icon="plus-circle">Create new Tag </button>
+
 
 <!-- /HTML CODE -->
 <?php

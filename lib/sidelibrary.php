@@ -18,7 +18,7 @@
     exit();
   }
 ?>
-  <h5>Library</h5>
+  <h5>Library Statistics</h5>
   <div>
     <span class="uk-text-small">PDF <small>(<?php echo $myDB->getTypeCount('pdf')?>)</small></span>
     <progress class="uk-progress primary" value="<?php echo $myDB->getTypeCount('pdf')?>" max="<?php echo $myDB->getBookCount();?>"></progress>

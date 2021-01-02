@@ -18,10 +18,10 @@
     exit();
   }
 
-  $tmpTags = $myDB->getTagList();
-  foreach ($tmpTags as $tmpArray) {
+  $tmpTags = $myDB->getTagList(); //Retrieve Taglist
+  foreach ($tmpTags as $tmpArray) { //Iterate over each of them
     echo '<li>
-          <a title="'.$tmpArray['caption'].'" onclick="ReloadSection( \'book-list\', \'booklist.php\', \'tag='.$tmpArray['id'].'\')">'.$tmpArray['caption'].'
+          <a title="'.$tmpArray['caption'].'" onclick="RegisterTagSearch('.$tmpArray['id'].')">'.$tmpArray['caption'].'
           </a>
           </li>';
   }

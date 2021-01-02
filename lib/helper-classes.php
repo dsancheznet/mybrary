@@ -76,20 +76,51 @@
 */
 
     function setNewTag( $tmpCaption ) {
-      return $this->CONN->exec('INSERT INTO tags (caption) VALUES ("'.$tmpCaption.'")');
+      return $this->CONN->exec('INSERT INTO tags (caption) VALUES ("'.strtolower($tmpCaption).'")');
     }
 
     function setTagCaption( $tmpID, $tmpCaption ) {
-      return $this->CONN->exec( 'UPDATE tags SET caption="'.$tmpCaption.'" WHERE id='.$tmpID );
+      return $this->CONN->exec( 'UPDATE tags SET caption="'.strtolower($tmpCaption).'" WHERE id='.$tmpID );
     }
 
-    function setTagFor( $tmpTagID, $tmpBookID ) {
+    function setTagForBook( $tmpTagID, $tmpBookID ) {
+      //Check if the book has this tag assigned already.
       return $this->CONN->exec( 'INSERT INTO tags2books (book, tag) VALUES ( "'.$tmpBookID.'","'.$tmpTagID.'" )');
     }
 
     function getTagCount() {
       $tmpDataset = $this->CONN->querySingle( 'SELECT COUNT(*) as count FROM tags' );
       return $tmpDataset;
+    }
+
+    function getTagWithName( $tmpName ) {
+      return $this->CONN->querySingle( 'SELECT id FROM tags WHERE caption="'.strtolower($tmpName).'"' );
+    }
+
+    function setTagStringForBook( $tmpTagString, $tmpBookID ) {
+      $this->CONN->exec( 'DELETE FROM tags2books WHERE book="'.$tmpBookID.'"' ); //Clean all tags from the record
+      if ( !$tmpTagString == "" ) { //Do we havew a tag String?
+        //YES
+        if ( strpos( $tmpTagString , "," ) > 0 ) { //Do we have multiple tags?
+          //YES
+          $tmpTagArray = explode( ",", str_replace(" ","", $tmpTagString) ); //Convert a comma separated string to array, stripping all blank spaces.
+          foreach ( $tmpTagArray as $tmpTag ) { //Iterate over all tags in string
+            error_log('Processing tag '.$tmpTag );
+            if ( $this->getTagWithName( $tmpTag ) == "" ) { //Does the item exist in database?
+              //NO
+              if ( !$this->setNewTag( $tmpTag ) ) { echo "error creating tag"; return false; } //Print out an error if the tag could not be created
+            }
+            if ( !$this->setTagForBook( $this->getTagWithName( $tmpTag ), $tmpBookID ) ) { echo "error setting tag for book"; return false; } //Print out an error if tag assignment fails
+          }
+        } else {
+          //NO
+          if ( $this->getTagWithName( $tmpTagString ) == "" ) { //Does the item exist in database?
+            //NO
+            if ( !$this->setNewTag( $tmpTagString ) ) { echo "error creating tag"; return false; } //Print out an error if the tag could not be created
+          }
+          if ( !$this->setTagForBook( $this->getTagWithName( $tmpTag ), $tmpBookID ) ) { echo "error setting tag for book"; return false; } //Print out an error if tag assignment fails
+        }
+      }
     }
 
     function getTagList() {
@@ -102,11 +133,13 @@
     }
 
     function getTagCaption( $tmpTagNumber ) {
-      $tmpDataset = $this->CONN->querySingle( 'SELECT caption FROM tags WHERE id='.$tmpTagNumber );
+      $tmpStatement = 'SELECT caption FROM tags WHERE id="'.$tmpTagNumber.'"';
+      error_log( "Executing ".$tmpStatement );
+      $tmpDataset = $this->CONN->querySingle( $tmpStatement );
       return $tmpDataset;
     }
 
-    function getTagsFor( $tmpID ) {
+    function getTagsForBook( $tmpID ) {
       $tmpDataset = $this->CONN->query( 'SELECT tag FROM tags2books WHERE book='.$tmpID );
       $tmpDataArray = [];
       while( $tmpResult = $tmpDataset->fetchArray()) {
@@ -129,6 +162,14 @@
 
     function setNewBook( $tmpUUID, $tmpName, $tmpType, $tmpUploader ) {
       return $this->CONN->exec('INSERT INTO books (uuid, title, type, uploader) VALUES ("'.$tmpUUID.'", "'.$tmpName.'", "'.$tmpType.'", "'.$tmpUploader.'" )');
+    }
+
+    function setBookData( $tmpBookID, $tmpTitle, $tmpAuthor, $tmpSummary, $tmpISBN, $tmpTags ) {
+      $tmpStatement = 'UPDATE books SET title="'.$tmpTitle.'", author="'.$tmpAuthor.'", summary="'.$tmpSummary.'", isbn="'.$tmpISBN.'" WHERE id='.$tmpBookID;
+      $tmpStatement = str_replace( '=""', '=NULL', $tmpStatement ); //Replace empty fields with NULL (otherwise sqlite3 detects duplicity)
+      error_log( "Executing ".$tmpStatement );
+      $this->setTagStringForBook( $tmpTags, $tmpBookID );
+      return ( $this->CONN->exec( $tmpStatement ) );
     }
 
     function getBookCount() {

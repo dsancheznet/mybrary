@@ -90,9 +90,10 @@
     echo '> Uploader </label>';
     echo '<label><input class="uk-checkbox" type="checkbox" ';
     echo (((int)$myDB->role($tmpUserToModify) & 4) == 4 )?'checked':'';
-    echo '> Reader </label>';
+    echo '> Administrator </label>';
   }
 ?>
-    <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-remove-bottom uk-margin-top" onclick=""><span class="uk-margin-small-right" uk-icon="download"></span>Save</button>
+
+      <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-remove-bottom uk-margin-top" onclick=""><span class="uk-margin-small-right" uk-icon="download" onclick="SaveUserData()"></span>Save</button>
     </div>
 <!--</form>-->

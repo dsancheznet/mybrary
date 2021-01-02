@@ -17,32 +17,40 @@ if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
   exit();
 }
 
-if ( intdiv( (int)$tmpUserRole & (int)2, 2) ) {
-
-  switch ( $_POST['function'] ) {
-      case "edit":
-          error_log($tmpUsername+" modifies tag ".$_POST['id']." to read ".$_POST['caption']);
-          if ( $myDB->setTagCaption( $_POST['id'], $_POST['caption'] ) ) {
+if ( intdiv( (int)$tmpUserRole & (int)2, 2) ) { //Is the user authotized to edit tags?
+  //YES
+  switch ( $_POST['function'] ) { //Select the function to execute...
+      case "edit": //Edit a tag
+          error_log($tmpUsername+" modifies tag ".$_POST['id']." to read ".$_POST['caption']); //Error log
+          if ( $myDB->setTagCaption( $_POST['id'], $_POST['caption'] ) ) { //Save the tag name to database successful?
+            //YES
             echo 'ok';
           } else {
+            //NO
             echo 'error';
           }
-          break;
-      case "delete":
-          error_log($tmpUsername+" deletes tag ".$_POST['id']."/".$_POST['caption']);
-          if ( $myDB->eraseTagFromDB( $_POST['id'] ) ) {
+          break; //Escape switch block
+      case "delete": //Remove a tag from database
+          error_log($tmpUsername+" deletes tag ".$_POST['id']."/".$_POST['caption']); //Error Log
+          if ( $myDB->eraseTagFromDB( $_POST['id'] ) ) { //Remove the tag from database successful?
+            //YES
             echo 'ok';
           } else {
+            //NO
             echo 'error';
           }
-          break;
-      case "create":
-          error_log($tmpUsername+" creates tag ".$_POST['caption']);
-          if ( $myDB->setNewTag($_POST['caption']) ) {
+          break; // Escape switch block
+      case "create": //Create a new tag
+          error_log($tmpUsername+" creates tag ".$_POST['caption']); //Error Log
+          if ( $myDB->setNewTag($_POST['caption']) ) { //Is the create tag successful?
+            //YES
             echo 'ok';
           } else {
+            //NO
             echo 'error';
           }
-          break;
+          break; // Escape switch block
+      default:
+          echo "error: no function was selected";
   }
 }

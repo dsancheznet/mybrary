@@ -28,7 +28,7 @@
 		<!-- CUSTOM CSS -->
 		<link rel="stylesheet" type="text/css" href="css/dashboard.css">
 		<!-- plupload JS -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/plupload/3.1.2/plupload.full.min.js"></script>
+		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/plupload/3.1.2/plupload.full.min.js"></script>-->
 	</head>
 
 <!-- * * * * * * * * * * * BODY * * * * * * * * * * -->
@@ -99,6 +99,8 @@ Y88b  d88P  888   888  .d88P 888            888   d8888888888 Y88b  d88P Y88b  d
 "Y8888P"  8888888 8888888P"  8888888888     888  d88P     888  "Y8888P88  "Y8888P"
 -->
 						</ul>
+
+
 					</li>
 					<li class="uk-parent">
 						<a href="#"><span data-uk-icon="icon: folder" class="uk-margin-small-right"></span>Types</a>
@@ -111,6 +113,8 @@ Y88b  d88P  888   888  .d88P 888            888   d8888888888 Y88b  d88P Y88b  d
 					</li>
 					<li><a onclick="ResetFilters()"><span data-uk-icon="icon: refresh" class="uk-margin-small-right"></span>Reset Filters</a></li>
 				</ul>
+
+
 				<div id="side-library" class="left-content-box uk-margin-top">
 
 <!--

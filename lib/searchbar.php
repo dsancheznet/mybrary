@@ -2,7 +2,7 @@
 
 <div id="search-active"class="uk-navbar-left"  hidden>
   <a uk-icon="icon: trash" onclick="ResetSearchTerm()"></a>
-  <b>Search Term: </b>&nbsp;
+  <b class="uk-margin-small-left uk-margin-small-right">Search Term: </b>
   <i id="search-term"></i>
 </div>
 

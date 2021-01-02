@@ -26,14 +26,10 @@ if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
   </h5>
 </div>
 <div>
-  <span class="uk-text-small"><span data-uk-icon="icon:album" class="uk-margin-small-right uk-text-primary"></span>Documents</span>
+  <span class="uk-text-small"><span data-uk-icon="icon:album" class="uk-margin-small-right uk-text-primary"></span>Shown</span>
   <h5 id="book-count" class="uk-heading-primary uk-margin-remove uk-text-primary">
 <?php
-  if (isset($_POST['bookcount'])) {
-    echo $_POST['bookcount'];
-  } else {
     echo $myDB->getBookCount();
-  }
 ?>
   </h5>
 </div>
