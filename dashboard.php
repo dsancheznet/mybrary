@@ -1,6 +1,6 @@
 <?php
 	//Include all helper functions
-	include_once( 'lib/user-classes.php' );
+	include_once( 'lib/user-functions.php' );
 	//Start the session to be able to read back the stored variables
 	session_start();
 	//Read the variables from session storage
@@ -27,8 +27,7 @@
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.5/dist/css/uikit.min.css" />
 		<!-- CUSTOM CSS -->
 		<link rel="stylesheet" type="text/css" href="css/dashboard.css">
-		<!-- plupload JS -->
-		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/plupload/3.1.2/plupload.full.min.js"></script>-->
+
 	</head>
 
 <!-- * * * * * * * * * * * BODY * * * * * * * * * * -->
@@ -86,7 +85,7 @@ Y88b  d88P 888         d8888888888 888  T88b  Y88b  d88P 888    888 888   d88P d
 			<div class="left-nav-wrap">
 				<ul class="uk-nav uk-nav-default uk-nav-parent-icon" data-uk-nav>
 					<li class="uk-nav-header">Filters</li>
-					<li class="uk-parent"><a href="#"><span data-uk-icon="icon: thumbnails" class="uk-margin-small-right"></span>Tags</a>
+					<li class="uk-parent"><a href="#"><span data-uk-icon="icon: tag" class="uk-margin-small-right"></span>Tags</a>
 						<ul id="side-tags" class="uk-nav-sub">
 <!--
 .d8888b.  8888888 8888888b.  8888888888 88888888888     d8888  .d8888b.   .d8888b.
@@ -103,7 +102,7 @@ Y88b  d88P  888   888  .d88P 888            888   d8888888888 Y88b  d88P Y88b  d
 
 					</li>
 					<li class="uk-parent">
-						<a href="#"><span data-uk-icon="icon: folder" class="uk-margin-small-right"></span>Types</a>
+						<a href="#"><span data-uk-icon="icon: thumbnails" class="uk-margin-small-right"></span>Types</a>
 						<ul class="uk-nav-sub">
 							<li><a onclick="RegisterTypeSearch('pdf')">PDF</a></li>
 							<li><a onclick="RegisterTypeSearch('epub')">ePUB</a></li>
@@ -199,9 +198,7 @@ Y88b  d88P  888   888  .d88P 888        888        888   888   d88P 888  T88b   
 <!-- CUSTOM JS FILES -->
 		<script src="js/mybrary.js"></script>
 <!-- /CUSTOM JS FILES -->
-		<!--<iframe src="empty.html" style="position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;">
-    	Your browser doesn't support iframes
-		</iframe>-->
+
 	</body>
 </html>
 <!-- Ansi Regular and  Colossal -->

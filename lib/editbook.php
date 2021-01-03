@@ -1,5 +1,5 @@
 <?php
-  include_once( 'user-classes.php' );
+  include_once( 'user-functions.php' );
   chdir('..');
   session_start();
 
@@ -26,7 +26,7 @@ if ( intdiv( (int)$tmpUserRole & (int)2, 2 ) ) { //Is the user authotized to edi
     $tmpSummary = str_replace("'", "`", str_replace('"', "´", $_POST['summary']));
     $tmpISBN = $_POST['isbn'];
     $tmpTags = $_POST['tags'];
-    if ( $myDB->setBookData( $_POST['bookid'], $tmpTitle, $tmpAuthor, str_replace("\n","<br />",$tmpSummary), $tmpISBN, $tmpTags ) ) {
+    if ( $myDB->setBookData( $_POST['bookid'], $tmpTitle, $tmpAuthor, $tmpSummary, $tmpISBN, $tmpTags ) ) {
         echo "bookdata saved";
     } else {
       echo "error saving bookdata";

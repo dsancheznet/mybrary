@@ -1,6 +1,6 @@
 <?php
 
-  include_once( 'user-classes.php' );
+  include_once( 'user-functions.php' );
   chdir('..');
   session_start();
 
@@ -8,7 +8,7 @@
   $tmpPassword = $_SESSION['md5pass'];
 
   $myDB = new Database();
-  $tmpUserRole = $myDB->role( $tmpUsername );
+  $tmpUserRole = $myDB->getRole( $tmpUsername );
 //Is the user logged in on do we have valid credentials?
 if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
   //NO

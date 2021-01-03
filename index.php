@@ -12,7 +12,7 @@ summary:
 */
 
 //Import all user settings
-  include_once( 'lib/user-classes.php' );
+  include_once( 'lib/user-functions.php' );
 //Declare user variables - even if they are not set (will be empty)
   $tmpUsername = $_POST['username'];
   $tmpPassword = $_POST['password'];

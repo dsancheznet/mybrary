@@ -1,5 +1,5 @@
 <?php
-  include_once('user-classes.php');
+  include_once('user-functions.php');
   chdir('..');
   //Start the session to be able to read back the stored variables
   session_start();

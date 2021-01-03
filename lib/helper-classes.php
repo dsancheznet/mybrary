@@ -406,4 +406,12 @@ include_once( 'ParsedownExtra.php');
     }
   }
 
+class FakeDown {
+  //A fake parsedown behaviour imitating class.
+
+  function text( $tmpText ) {
+      echo str_replace( "\n", "<br />", $tmpText );
+  }
+}
+
 ?>

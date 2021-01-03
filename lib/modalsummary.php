@@ -1,5 +1,5 @@
 <?php
-  include_once( 'user-classes.php' );
+  include_once( 'user-functions.php' );
   chdir('..');
   session_start();
 
@@ -27,8 +27,9 @@
   if (isset($_POST['bookid'])) { //Do we have a bookid?
     //YES
     $tmpBookID = $_POST['bookid']; //Capture it.
+    $tmpParser = new Parsedown();
     $tmpSummary = $myDB->getBookSummary( $tmpBookID ); //Get the summary for it.
-    echo ($tmpSummary=="")?'<span class="uk-text-primary">No summary available</span>':$tmpSummary; //Print info or summary if available
+    echo ($tmpSummary=="")?'<span class="uk-text-primary">No summary available</span>':$tmpParser->text( $tmpSummary ); //Print info or summary if available
   } else {
     echo "error. no bookid found"; //error message
   }

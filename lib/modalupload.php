@@ -1,5 +1,5 @@
 <?php
-  include_once( 'user-classes.php' );
+  include_once( 'user-functions.php' );
   chdir('..');
   session_start();
 
