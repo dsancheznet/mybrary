@@ -68,7 +68,7 @@ function ShowUploadForm() {
       ConfigureUpload();
     }
   };
-  xhr.open("GET", "lib/upload.php", true);
+  xhr.open("GET", "lib/modalupload.php", true);
   xhr.send();
 }
 
@@ -76,7 +76,7 @@ function ShowUploadForm() {
 function ConfigureUpload() {
       var bar = document.getElementById('js-progressbar');
       UIkit.upload('.js-upload', {
-          url: 'lib/chunk.php',
+          url: 'lib/uploadchunk.php',
           multiple: true,
           beforeSend: function () {
               console.log('beforeSend', arguments);
@@ -129,7 +129,7 @@ function ConfigureUpload() {
 
 function ConfigurePhotoUpload( bookID ) {
       UIkit.upload('.js-upload', {
-          url: 'lib/photoupload.php?id='+bookID,
+          url: 'lib/uploadphoto.php?id='+bookID,
           multiple: false,
           allow: '*.jpg',
           beforeSend: function () {
@@ -365,7 +365,7 @@ function ShowSearch() {
       document.getElementById("search-field").focus();
     }
   };
-  xhr.open("GET", "lib/searchpanel.php", true);
+  xhr.open("GET", "lib/modalsearch.php", true);
   xhr.send();
 }
 

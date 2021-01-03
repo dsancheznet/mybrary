@@ -22,9 +22,15 @@
 
 <h4>· Book Summary ·</h4>
 
-<!-- TODO : check for existence of bookid -->
-
 <?php
-  $tmpSummary = $myDB->getBookSummary($_POST['bookid']);
-  echo ($tmpSummary=="")?'<span class="uk-text-primary uk-text-center">No summary available</span>':$tmpSummary;
+
+  if (isset($_POST['bookid'])) { //Do we have a bookid?
+    //YES
+    $tmpBookID = $_POST['bookid']; //Capture it.
+    $tmpSummary = $myDB->getBookSummary( $tmpBookID ); //Get the summary for it.
+    echo ($tmpSummary=="")?'<span class="uk-text-primary">No summary available</span>':$tmpSummary; //Print info or summary if available
+  } else {
+    echo "error. no bookid found"; //error message
+  }
+
 ?>

@@ -37,9 +37,9 @@ include_once('helper-classes.php');
     }
   }
 
-  function insertBookMenu( $tmpID ) {
+  function insertBookMenu( $tmpID, $tmpUUID="", $tmpFileType="" ) {
     return '<ul class="uk-iconnav">
-    <li><a uk-icon="icon: file-pdf"></a></li>
+    <li><a href="../data/books/'.$tmpUUID.'.'.$tmpFileType.'" uk-icon="icon: file-pdf" target="_blank" rel="noopener noreferrer"></a></li>
     <li><a uk-icon="icon: cloud-download"></a></li>
     <li><a href="#modal-dash" uk-icon="icon: file-text" onclick="ShowBookSummary('.$tmpID.')" uk-toggle></a></li>
     <li><a uk-icon="icon: trash" onclick="DeleteBookWithId('.$tmpID.')"></a></li>
