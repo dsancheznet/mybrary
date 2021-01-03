@@ -64,21 +64,21 @@ Y88b  d88P 888         d8888888888 888  T88b  Y88b  d88P 888    888 888   d88P d
 				<img class="custom-logo" src="img/logo-dashboard.svg" width="200px" alt="">
 			</div>
 			<div class="left-content-box  content-box-dark">
-				<img src="img/avatars/<?php echo $myDB->avatar( $_SESSION['username'] ); ?>" alt="" class="uk-border-circle profile-img">
+				<img src="img/avatars/<?php echo $myDB->getAvatar( $_SESSION['username'] ); ?>" alt="" class="uk-border-circle profile-img">
 				<h4 class="uk-text-center uk-margin-remove-vertical text-light">
 <?php
-					echo $myDB->name( $_SESSION['username'] );
+					echo $myDB->getFullName( $_SESSION['username'] );
 ?>
 				</h4>
 
 				<div class="uk-position-relative uk-text-center uk-display-block">
 				    <a href="#" class="uk-text-small uk-text-muted uk-display-block uk-text-center" data-uk-icon="icon: triangle-down; ratio: 0.7">
 <?php
-							echo $myDB->rolename( $_SESSION['username'] );
+							echo $myDB->getRoleName( $_SESSION['username'] );
 ?>
 						</a>
 				    <!-- user dropdown -->
-						<?php insertUserMenu( $myDB->role( $tmpUsername ), $tmpUsername );?>
+						<?php insertUserMenu( $myDB->getRole( $tmpUsername ), $tmpUsername );?>
 				    <!-- /user dropdown -->
 				</div>
 			</div>

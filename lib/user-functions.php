@@ -37,13 +37,14 @@ include_once('helper-classes.php');
     }
   }
 
-  function insertBookMenu( $tmpID, $tmpUUID="", $tmpFileType="" ) {
+  function insertBookMenu( $tmpBook ) {
     return '<ul class="uk-iconnav">
-    <li><a href="../data/books/'.$tmpUUID.'.'.$tmpFileType.'" uk-icon="icon: file-pdf" target="_blank" rel="noopener noreferrer"></a></li>
+    <li><a href="../data/books/'.$tmpBook['uuid'].'.'.$tmpBook['type'].'" uk-icon="icon: file-pdf" target="_blank" rel="noopener noreferrer"></a></li>
     <li><a uk-icon="icon: cloud-download"></a></li>
-    <li><a href="#modal-dash" uk-icon="icon: file-text" onclick="ShowBookSummary('.$tmpID.')" uk-toggle></a></li>
-    <li><a uk-icon="icon: trash" onclick="DeleteBookWithId('.$tmpID.')"></a></li>
+    <li><a href="#modal-dash" uk-icon="icon: file-text" onclick="ShowBookSummary('.$tmpBook['id'].')" uk-toggle></a></li>
+    <li><a uk-icon="icon: trash" onclick="DeleteBookWithId('.$tmpBook['id'].')"></a></li>
     </ul>';
+    //['id'], $tmpBook['uuid'], $tmpBook['type']
   }
 
   function insertUserMenu( $tmpUserRole, $tmpUsername ) {

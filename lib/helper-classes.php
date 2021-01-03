@@ -1,41 +1,68 @@
 <?php
 
+include_once( 'Parsedown.php' );
+include_once( 'ParsedownExtra.php');
+
   class Database {
 
     private $CONN = "";
-/*
-██    ██ ███████ ███████ ██████  ███████ 
-██    ██ ██      ██      ██   ██ ██      
-██    ██ ███████ █████   ██████  ███████ 
-██    ██      ██ ██      ██   ██      ██ 
- ██████  ███████ ███████ ██   ██ ███████ 
-*/
     function __construct( ) {
       $this->CONN = new SQLite3( 'db/mybrary.db' );
     }
-
+    /*
+    ██    ██ ███████ ███████ ██████  ███████ 
+    ██    ██ ██      ██      ██   ██ ██      
+    ██    ██ ███████ █████   ██████  ███████ 
+    ██    ██      ██ ██      ██   ██      ██ 
+     ██████  ███████ ███████ ██   ██ ███████ 
+    */
     function md5Password( $tmpUsername ) {
       $tmpDataset = $this->CONN->querySingle( 'SELECT md5pass FROM users WHERE username="'.$tmpUsername.'"' );
       return $tmpDataset;
     }
 
-    function name( $tmpUsername ) {
+    function setNewUser( $tmpUserName, $tmpMD5Pass, $tmpFullname, $tmpRole, $tmpDefaultIcon = "040-man-13.svg" ) {
+      error_log('Executing '.'INSERT INTO users (username, md5pass, avatar, role, name) VALUES ( "'.$tmpUserName.'", "'.$tmpMD5Pass.'", "'.$tmpDefaultIcon.'", '.$tmpRole.', "'.$tmpFullname.'" )');
+      return $this->CONN->exec( 'INSERT INTO users (username, md5pass, avatar, role, name) VALUES ( "'.$tmpUserName.'", "'.$tmpMD5Pass.'", "'.$tmpDefaultIcon.'", '.$tmpRole.', "'.$tmpFullname.'" )');
+    }
+
+    function setUserFullname( $tmpUserName, $tmpFullname ) {
+      error_log('Executing '.'UPDATE users SET name="'.$tmpFullname.'" WHERE username="'.$tmpUserName.'"');
+      return $this->CONN->exec( 'UPDATE users SET name="'.$tmpFullname.'" WHERE username="'.$tmpUserName.'"' );
+    }
+
+    function setUserRole( $tmpUserName, $tmpRole ) {
+      error_log('Executing '.'UPDATE users SET role=".$tmpRole." WHERE username=".$tmpUserName."');
+      return $this->CONN->exec( 'UPDATE users SET role=".$tmpRole." WHERE username=".$tmpUserName."' );
+    }
+
+    function setUserAvatar( $tmpUserName, $tmpDefaultIcon ) {
+      error_log('Executing '.'UPDATE users SET avatar="'.$tmpDefaultIcon.'" WHERE username="'.$tmpUserName.'"' );
+      return $this->CONN->exec( 'UPDATE users SET avatar="'.$tmpDefaultIcon.'" WHERE username="'.$tmpUserName.'"' );
+    }
+
+    function setUsermd5Password( $tmpUserName, $tmpMD5Pass ){
+      error_log('Executing '.'UPDATE users SET md5pass="'.$tmpMD5Pass.'" WHERE username="'.$tmpUserName.'"');
+      return $this->CONN->exec( 'UPDATE users SET md5pass="'.$tmpMD5Pass.'" WHERE username="'.$tmpUserName.'"' );
+    }
+
+    function getFullName( $tmpUsername ) {
       $tmpDataset = $this->CONN->querySingle( 'SELECT name FROM users WHERE username="'.$tmpUsername.'"' );
       return $tmpDataset;
     }
 
-    function role( $tmpUsername ) {
+    function getRole( $tmpUsername ) {
       $tmpDataset = $this->CONN->querySingle( 'SELECT role FROM users WHERE username="'.$tmpUsername.'"' );
       return $tmpDataset;
     }
 
-    function rolename( $tmpUsername ) {
+    function getRoleName( $tmpUsername ) {
       $tmpDataset = $this->CONN->querySingle( 'SELECT role FROM users WHERE username="'.$tmpUsername.'"' );
-      $tmpRolenames = ['Reader', 'User', 'User', 'User', 'User', 'User', 'Administrator']; // Following Flags (bitwise): 001 = Read, 010 = Upload, 100 = Administrator
+      $tmpRolenames = ['Reader', 'User', 'User', 'Administrator', 'Administrator', 'Administrator', 'Administrator']; // Following Flags (bitwise): 001 = Read, 010 = Upload, 100 = Administrator
       return $tmpRolenames[$tmpDataset-1];
     }
 
-    function avatar( $tmpUsername ) {
+    function getAvatar( $tmpUsername ) {
       $tmpDataset = $this->CONN->querySingle( 'SELECT avatar FROM users WHERE username="'.$tmpUsername.'"' );
       return $tmpDataset;
     }
@@ -52,6 +79,10 @@
         array_push($tmpDataArray, $tmpResult );
       }
       return $tmpDataArray;
+    }
+
+    function eraseUserFromDB( $tmpUsername ) {
+      return $this->CONN->exec( 'DELETE FROM users WHERE username=".$tmpUsername."' );
     }
 
 /*
@@ -88,20 +119,6 @@
       return $this->CONN->exec( 'INSERT INTO tags2books (book, tag) VALUES ( "'.$tmpBookID.'","'.$tmpTagID.'" )');
     }
 
-    function getTagStringForBook( $tmpBookID ) {
-      $tmpDataset = $this->CONN->query( 'SELECT tag FROM tags2books WHERE book="'.$tmpBookID.'"' );
-      if ( $tmpDataset == null ) { return ""; }
-      $tmpTagSet = [];
-      while ( $tmpData = $tmpDataset->fetchArray() ) {
-        $tmpTagSet[] = $this->getTagCaption( $tmpData['tag'] );
-      }
-      if ( count($tmpTagSet)>0 ) {
-        return implode( ",",$tmpTagSet );
-      } else {
-        return "";
-      }
-    }
-
     function setTagStringForBook( $tmpTagString, $tmpBookID ) {
       $this->CONN->exec( 'DELETE FROM tags2books WHERE book="'.$tmpBookID.'"' ); //Clean all tags from the record
       if ( !$tmpTagString == "" ) { //Do we havew a tag String?
@@ -125,6 +142,20 @@
           }
           if ( !$this->setTagForBook( $this->getTagWithName( $tmpTagString ), $tmpBookID ) ) { echo "error setting tag for book"; return false; } //Print out an error if tag assignment fails
         }
+      }
+    }
+
+    function getTagStringForBook( $tmpBookID ) {
+      $tmpDataset = $this->CONN->query( 'SELECT tag FROM tags2books WHERE book="'.$tmpBookID.'"' );
+      if ( $tmpDataset == null ) { return ""; }
+      $tmpTagSet = [];
+      while ( $tmpData = $tmpDataset->fetchArray() ) {
+        $tmpTagSet[] = $this->getTagCaption( $tmpData['tag'] );
+      }
+      if ( count($tmpTagSet)>0 ) {
+        return implode( ",",$tmpTagSet );
+      } else {
+        return "";
       }
     }
 

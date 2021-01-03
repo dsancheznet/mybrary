@@ -15,7 +15,7 @@
     echo "Access Denied. <br />";
     echo "Unable to verify your session.";
     exit();
-  } elseif ( ( (int)$myDB->role( $tmpUsername ) & (int)2 ) == 0 ) {
+  } elseif ( ( (int)$myDB->getRole( $tmpUsername ) & (int)2 ) == 0 ) {
       echo "Acces denied. <br/>";
       echo "You are not allowed to upload.";
       exit();

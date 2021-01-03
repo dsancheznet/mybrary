@@ -8,7 +8,7 @@
   $tmpPassword = $_SESSION['md5pass'];
 
   $myDB = new Database();
-  $tmpUserRole = $myDB->role( $tmpUsername );
+  $tmpUserRole = $myDB->getRole( $tmpUsername );
 //Is the user logged in on do we have valid credentials?
 if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
   //NO
@@ -45,7 +45,7 @@ if ( $myDB->getBookCount() > 0 ) { //Are there books to list?
       }
 
 			echo '<span class="uk-label uk-align-center uk-text-center uk-margin-small-top uk-margin-small-bottom" onclick="window.open(\'https://isbnsearch.org/isbn/'.$tmpBook['isbn'].'\');">ISBN '.$tmpBook['isbn'].'</span>';
-			echo insertBookMenu( $tmpBook['id'], $tmpBook['uuid'], $tmpBook['type']);
+			echo insertBookMenu( $tmpBook );
 			echo '</div></div></div>';
 	}
   echo '<input type="hidden" id="books-shown" value="'.$tmpBookCounter.'">';

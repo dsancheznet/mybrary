@@ -6,12 +6,12 @@
 ██ ██   ████ ██    ██ 
 */
 
-function PopulatePage() {
-  ReloadSection("search-bar", "searchbar.php");
-  ReloadSection("side-tags", "sidetags.php");
-  ReloadSection("info-table", "infotable.php");
-  ReloadSection("side-library", "sidelibrary.php");
-  ReloadSection("book-list", "booklist.php");
+function PopulatePage() { //This function is called on page load, from the body tag
+  ReloadSection("search-bar", "searchbar.php"); //Construct the search bar.
+  ReloadSection("side-tags", "sidetags.php"); //Construct the tag listing
+  ReloadSection("info-table", "infotable.php"); //Construct the informaction on top of the page
+  ReloadSection("side-library", "sidelibrary.php"); //Construct the library statistics
+  ReloadSection("book-list", "booklist.php"); //Construct the book listing
 }
 
 /*
@@ -40,7 +40,7 @@ function ShowUserAdminForm() {
       document.getElementById("modal-body").innerHTML = this.responseText;
     }
   };
-  xhr.open("GET", "lib/users.php", true);
+  xhr.open("GET", "lib/modaluserlist.php", true);
   xhr.send();
 }
 
@@ -49,7 +49,34 @@ function AvatarChanged() {
 }
 
 function SaveUserData() {
-
+  var password ="";
+  let username = document.getElementById('user-username').value;
+  let avatar = document.getElementById('avatar-selector').value;
+  let fullname = document.getElementById('user-fullname').value;
+  let password1 = document.getElementById('user-passwd1').value;
+  let password2 = document.getElementById('user-passwd2').value;
+  if ( password1 == password2 ) {
+    password = password1;
+  }
+  userrole = 0;
+  if ( document.getElementById('user-readerchk').checked ) { userrole+=1 };
+  if ( document.getElementById('user-userchk').checked   ) { userrole+=2 };
+  if ( document.getElementById('user-adminchk').checked  ) { userrole+=4 };
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      window.location.reload(true);
+    }
+  };
+  xhr.open("POST", "lib/edituser.php", true);
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  var poststring = "function=edit&";
+  poststring += "avatar="+avatar+"&";
+  if ( typeof password != '' ) { poststring += "password="+password+"&" };
+  poststring += "fullname="+fullname+"&";
+  poststring += "role="+userrole+"&"
+  poststring += "username="+username;
+  xhr.send( poststring );
 }
 
 /*
@@ -71,7 +98,6 @@ function ShowUploadForm() {
   xhr.open("GET", "lib/modalupload.php", true);
   xhr.send();
 }
-
 
 function ConfigureUpload() {
       var bar = document.getElementById('js-progressbar');

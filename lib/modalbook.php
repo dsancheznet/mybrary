@@ -7,7 +7,7 @@
   $tmpPassword = $_SESSION['md5pass'];
 
   $myDB = new Database();
-  $tmpUserRole = $myDB->role( $tmpUsername );
+  $tmpUserRole = $myDB->getRole( $tmpUsername );
 
 //Is the user logged in on do we have valid credentials?
   if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
@@ -76,7 +76,7 @@
     </div>
 </div>
 
-<button class="uk-button uk-button-primary uk-width-1-1 uk-margin-remove-bottom uk-margin-top" onclick="SaveBookData(<?php echo $_POST['bookid'];?>)"><span class="uk-margin-small-right" uk-icon="download" uk-toggle="target: #modal-dash"></span>Save</button>
+<button class="uk-button uk-button-primary uk-width-1-1 uk-margin-remove-bottom uk-margin-top" onclick="SaveBookData(<?php echo $_POST['bookid'];?>)" uk-toggle="target: #modal-dash"><span class="uk-margin-small-right" uk-icon="download"></span>Save</button>
 
 <?php
     } else {
