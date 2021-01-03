@@ -31,7 +31,6 @@ if ( intdiv( (int)$tmpUserRole & (int)2, 2) ) { //Is the user authotized to edit
           }
           break; //Escape switch block
       case "delete": //Remove a tag from database
-          error_log($tmpUsername+" deletes tag ".$_POST['id']."/".$_POST['caption']); //Error Log
           if ( $myDB->eraseTagFromDB( $_POST['id'] ) ) { //Remove the tag from database successful?
             //YES
             echo 'ok';

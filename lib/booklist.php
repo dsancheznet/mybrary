@@ -34,11 +34,16 @@ if ( $myDB->getBookCount() > 0 ) { //Are there books to list?
       	echo '<a href="#modal-dash" onclick="ShowBookEditModal('.$tmpBook['id'].')" uk-toggle><img src="data/covers/'.$tmpBook['uuid'].'.jpg" width="500px" alt=""></a></div>';
 			} else {
         //NO
-				echo '<img src="img/NoCover.svg" width="500px" alt=""></div>';
+				echo '<a href="#modal-dash" onclick="ShowBookEditModal('.$tmpBook['id'].')" uk-toggle><img src="img/NoCover.svg" width="500px" alt=""></a></div>';
 			}
 			echo '<div class="uk-card-body uk-padding-remove"><span class="uk-text-bold">'.$tmpBook['title'].'</span>';
 			echo '<span class="uk-text-small uk-align-center">'.$tmpBook['author'].'</span>';
-			echo '<span uk-icon="icon: tag"></span><span class="uk-text-small">'.implode(', ', $myDB->getTagsForBook($tmpBook['id'])).'</span>';
+      if ( $myDB->getTagCountForBook( $tmpBook['id'] ) ) {
+        echo '<span class="uk-margin-small-right" uk-icon="icon: tag"></span><span class="uk-text-small">'.implode(', ', $myDB->getTagsForBook($tmpBook['id'])).'</span>';
+      } else {
+
+      }
+
 			echo '<span class="uk-label uk-align-center uk-text-center uk-margin-small-top uk-margin-small-bottom" onclick="window.open(\'https://isbnsearch.org/isbn/'.$tmpBook['isbn'].'\');">ISBN '.$tmpBook['isbn'].'</span>';
 			echo insertBookMenu( $tmpBook['id']);
 			echo '</div></div></div>';

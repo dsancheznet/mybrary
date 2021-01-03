@@ -124,9 +124,45 @@ function ConfigureUpload() {
                   document.getElementById("result-panel").innerHTML = "ok";
               }, 1000);
           }
-
       });
+}
 
+function ConfigurePhotoUpload( bookID ) {
+      UIkit.upload('.js-upload', {
+          url: 'lib/photoupload.php?id='+bookID,
+          multiple: false,
+          allow: '*.jpg',
+          beforeSend: function () {
+              console.log('beforeSend', arguments);
+          },
+          beforeAll: function () {
+              console.log('beforeAll', arguments);
+          },
+          load: function () {
+              console.log('load', arguments);
+          },
+          error: function () {
+              console.log('error', arguments);
+          },
+          complete: function () {
+              console.log('complete', arguments);
+          },
+          loadStart: function (e) {
+              console.log('loadStart', arguments);
+          },
+          progress: function (e) {
+              console.log('progress', arguments);
+          },
+          loadEnd: function (e) {
+              console.log('loadEnd', arguments);
+          },
+          completeAll: function () {
+              console.log('completeAll', arguments);
+              setTimeout(function () {
+                  ReloadSection("book-list", "booklist.php");
+              }, 500);
+          }
+      });
 }
 
 /*
@@ -253,6 +289,7 @@ function ShowBookEditModal( bookID ) {
   xhr.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       document.getElementById("modal-body").innerHTML = this.responseText;
+      ConfigurePhotoUpload( bookID );
     }
   };
   xhr.open("POST", "lib/modalbook.php", true);
@@ -264,8 +301,11 @@ function SaveBookData( bookID ) {
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("save-message").hidden = false;
-      document.getElementById("save-paragraph").innerHTML = this.responseText;
+      let tmpMessage = this.responseText;
+      if ( tmpMessage != "bookdata saved" ) {
+        document.getElementById("save-message").hidden = false;
+        document.getElementById("save-paragraph").innerHTML = "|"+tmpMessage+"|";
+      }
     }
   };
   xhr.open("POST", "lib/editbook.php", true);
@@ -278,7 +318,20 @@ function SaveBookData( bookID ) {
     "&isbn="+document.getElementById("bookform-isbn").value+
     "&tags="+document.getElementById("bookform-tags").value );
   ExecuteSearch();
+  ReloadSection("side-tags", "sidetags.php");
+  ReloadSection("search-bar", "searchbar.php");
 }
+
+function ShowBookSummary( bookID ) {
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("modal-body").innerHTML = this.responseText;
+    }
+  };
+  xhr.open("POST", "lib/modalsummary.php", true);
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhr.send("bookid="+bookID);}
 
 /*
 ███████ ███████  █████  ██████   ██████ ██   ██ 
@@ -322,7 +375,6 @@ function CloseAndSendSearch() {
     document.getElementById('search-term').innerHTML = document.getElementById('search-field').value;
     ExecuteSearch();
   }
-  UIkit.toggle(document.getElementById('modal-dash')).toggle();
 }
 
 function ExecuteSearch() {

@@ -26,10 +26,14 @@
 ?>
 
 <button class="uk-modal-close-default" type="button" uk-close></button>
-<div id="save-message" class="uk-alert-success" uk-alert hidden>
+<div id="save-message" class="uk-alert-warning" uk-alert hidden>
   <a class="uk-alert-close" uk-close></a>
   <p id="save-paragraph">
   </p>
+</div>
+<div class="js-upload uk-align-right uk-margin-small-top" uk-form-custom>
+    <input type="file">
+    <button class="uk-button uk-button-default" type="button" tabindex="-1">Add cover</button>
 </div>
 <h4>· Book Data ·</h4>
 <div class="uk-margin">
@@ -68,11 +72,11 @@
   <label class="uk-form-label" for="form-stacked-select">Tags</label>
     <div class="uk-inline uk-width-1-1">
         <span class="uk-form-icon" uk-icon="icon: tag"></span>
-        <input id="bookform-tags" class="uk-input" value="<?php //echo $myDB->getBookTagString($_POST['bookid']);?>">
+        <input id="bookform-tags" class="uk-input" value="<?php echo $myDB->getTagStringForBook($_POST['bookid']);?>">
     </div>
 </div>
 
-<button class="uk-button uk-button-primary uk-width-1-1 uk-margin-remove-bottom uk-margin-top" onclick="SaveBookData(<?php echo $_POST['bookid'];?>)"><span class="uk-margin-small-right" uk-icon="download"></span>Save</button>
+<button class="uk-button uk-button-primary uk-width-1-1 uk-margin-remove-bottom uk-margin-top" onclick="SaveBookData(<?php echo $_POST['bookid'];?>)"><span class="uk-margin-small-right" uk-icon="download" uk-toggle="target: #modal-dash"></span>Save</button>
 
 <?php
     } else {

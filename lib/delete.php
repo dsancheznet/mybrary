@@ -18,7 +18,9 @@ if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
   exit();
 } elseif ( isset($_POST['bookid']) ) {
     $tmpBookID = $_POST['bookid'];
+    $tmpBookUUID = $myDB->getBookUUID( $tmpBookID );
     if ( $myDB->eraseBookFromDB($tmpBookID) ) {
+      unlink( 'data/covers/'.$tmpBookUUID.'.jpg' );
       echo "ok";
     } else {
       echo "error";

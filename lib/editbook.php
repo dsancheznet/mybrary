@@ -23,10 +23,10 @@ if ( intdiv( (int)$tmpUserRole & (int)2, 2 ) ) { //Is the user authotized to edi
     //YES
     $tmpTitle = $_POST['title'];
     $tmpAuthor = $_POST['author'];
-    $tmpSummary = $_POST['summary'];
+    $tmpSummary = str_replace("'", "`", str_replace('"', "´", $_POST['summary']));
     $tmpISBN = $_POST['isbn'];
     $tmpTags = $_POST['tags'];
-    if ( $myDB->setBookData( $_POST['bookid'], $tmpTitle, $tmpAuthor, $tmpSummary, $tmpISBN, $tmpTags ) ) {
+    if ( $myDB->setBookData( $_POST['bookid'], $tmpTitle, $tmpAuthor, str_replace("\n","<br />",$tmpSummary), $tmpISBN, $tmpTags ) ) {
         echo "bookdata saved";
     } else {
       echo "error saving bookdata";

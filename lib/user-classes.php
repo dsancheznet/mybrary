@@ -41,7 +41,7 @@ include_once('helper-classes.php');
     return '<ul class="uk-iconnav">
     <li><a uk-icon="icon: file-pdf"></a></li>
     <li><a uk-icon="icon: cloud-download"></a></li>
-    <li><a uk-icon="icon: file-text"></a></li>
+    <li><a href="#modal-dash" uk-icon="icon: file-text" onclick="ShowBookSummary('.$tmpID.')" uk-toggle></a></li>
     <li><a uk-icon="icon: trash" onclick="DeleteBookWithId('.$tmpID.')"></a></li>
     </ul>';
   }
@@ -68,7 +68,7 @@ include_once('helper-classes.php');
     //Generate an UUID
     $tmpUUID = UUID::v4();
     //While the file exists, do...
-    while ( file_exists( '../data/books/'+$tmpUUID+'.pdf' ) or file_exists( '../data/books/'+$tmpUUID+'.epub' ) or file_exists( '../data/books/'+$tmpUUID+'.txt' ) or file_exists( '../data/books/'+$tmpUUID+'.md' ) ) {
+    while ( file_exists( '../data/books/'.$tmpUUID.'.pdf' ) or file_exists( '../data/books/'.$tmpUUID.'.epub' ) or file_exists( '../data/books/'.$tmpUUID.'.txt' ) or file_exists( '../data/books/'.$tmpUUID.'.md' ) ) {
       //..generate a new uuid
       $tmpUUID = UUID::v4();
     }

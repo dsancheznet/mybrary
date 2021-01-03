@@ -88,13 +88,18 @@
       return $this->CONN->exec( 'INSERT INTO tags2books (book, tag) VALUES ( "'.$tmpBookID.'","'.$tmpTagID.'" )');
     }
 
-    function getTagCount() {
-      $tmpDataset = $this->CONN->querySingle( 'SELECT COUNT(*) as count FROM tags' );
-      return $tmpDataset;
-    }
-
-    function getTagWithName( $tmpName ) {
-      return $this->CONN->querySingle( 'SELECT id FROM tags WHERE caption="'.strtolower($tmpName).'"' );
+    function getTagStringForBook( $tmpBookID ) {
+      $tmpDataset = $this->CONN->query( 'SELECT tag FROM tags2books WHERE book="'.$tmpBookID.'"' );
+      if ( $tmpDataset == null ) { return ""; }
+      $tmpTagSet = [];
+      while ( $tmpData = $tmpDataset->fetchArray() ) {
+        $tmpTagSet[] = $this->getTagCaption( $tmpData['tag'] );
+      }
+      if ( count($tmpTagSet)>0 ) {
+        return implode( ",",$tmpTagSet );
+      } else {
+        return "";
+      }
     }
 
     function setTagStringForBook( $tmpTagString, $tmpBookID ) {
@@ -118,9 +123,23 @@
             //NO
             if ( !$this->setNewTag( $tmpTagString ) ) { echo "error creating tag"; return false; } //Print out an error if the tag could not be created
           }
-          if ( !$this->setTagForBook( $this->getTagWithName( $tmpTag ), $tmpBookID ) ) { echo "error setting tag for book"; return false; } //Print out an error if tag assignment fails
+          if ( !$this->setTagForBook( $this->getTagWithName( $tmpTagString ), $tmpBookID ) ) { echo "error setting tag for book"; return false; } //Print out an error if tag assignment fails
         }
       }
+    }
+
+    function getTagCountForBook( $tmpBookID ) {
+      $tmpDataset = $this->CONN->querySingle( 'SELECT COUNT(*) as count FROM tags2books WHERE book="'.$tmpBookID.'"' );
+      return $tmpDataset;
+    }
+
+    function getTagCount() {
+      $tmpDataset = $this->CONN->querySingle( 'SELECT COUNT(*) as count FROM tags' );
+      return $tmpDataset;
+    }
+
+    function getTagWithName( $tmpName ) {
+      return $this->CONN->querySingle( 'SELECT id FROM tags WHERE caption="'.strtolower($tmpName).'"' );
     }
 
     function getTagList() {
