@@ -26,4 +26,11 @@ CREATE TABLE IF NOT EXISTS `books` (
 	`uploader`	TEXT NOT NULL
 );
 INSERT INTO users (username, md5pass, role, avatar, name) VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3', 7, '072-police-officer-1.svg', 'System Administrator');
+INSERT INTO "tags2books" VALUES (1,1);
+INSERT INTO "tags" VALUES (1,'🇬🇧');
+INSERT INTO "books" VALUES (1,'00000000-0000-0000-0000-0000000000EN',NULL,'mybrary User Manual v0.2','#### mybrary user and administration reference manual.
+
+You may delete this file if you are familiar with the use of mybrary.
+
+English version.','D.Sánchez','pdf','admin');
 COMMIT;
