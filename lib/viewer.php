@@ -21,19 +21,17 @@
     //YES
     switch ( $myDB->getBookType( $_GET['id'] ) ) {
       case "pdf":
-        header("Location: pdf.html?file=../".$tmpBookStore.$myDB->getBookUUID( $_GET['id'] ).".pdf" );
-        //TODO : Insert pdf.js
+        header("Location: pdf.html?file=../".$tmpBookStore.$myDB->getBookUUID( $_GET['id'] ).".".$myDB->getBookType($_GET['id']) );
         exit;
         break;
       case "epub":
-          //TODO : Insert epub reader component.
-        break;
+        header("Location: epub.html?book=".$myDB->getBookUUID( $_GET['id'] ).".".$myDB->getBookType($_GET['id']) );        break;
       case "md":
-        $tmpBookData = file_get_contents( $tmpBookStore.$myDB->getBookUUID( $_GET['id'] ).'.md' );
+        $tmpBookData = file_get_contents( $tmpBookStore.$myDB->getBookUUID( $_GET['id'] ).".".$myDB->getBookType($_GET['id']) );
         $tmpParse = new Parsedown();
         break;
       case "txt":
-        $tmpBookData = file_get_contents( $tmpBookStore.$myDB->getBookUUID( $_GET['id'] ).'.txt' );
+        $tmpBookData = file_get_contents( $tmpBookStore.$myDB->getBookUUID( $_GET['id'] ).".".$myDB->getBookType($_GET['id']) );
         $tmpParse = new FakeDown();
         break;
 
