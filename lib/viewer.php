@@ -21,7 +21,8 @@
     //YES
     switch ( $myDB->getBookType( $_GET['id'] ) ) {
       case "pdf":
-        header("Location: ../".$tmpBookStore.$myDB->getBookUUID( $_GET['id'] ).".pdf" );
+        header("Location: pdf.html?file=../".$tmpBookStore.$myDB->getBookUUID( $_GET['id'] ).".pdf" );
+        //TODO : Insert pdf.js
         exit;
         break;
       case "epub":
