@@ -13,10 +13,12 @@ summary:
 
 //Import all user settings
   include_once( 'lib/user-functions.php' );
+
 //Declare user variables - even if they are not set (will be empty)
+//This generates a warning, but even if not elegant, it's 100% to plan
   $tmpUsername = $_POST['username'];
   $tmpPassword = $_POST['password'];
-  error_log( "Username:".$tmpUsername." Password:".$tmpPassword );
+
 //Is the user logged in on do we have valid credentials?
   if ( checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
     //YES : Goto dashboard

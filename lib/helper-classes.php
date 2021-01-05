@@ -22,27 +22,27 @@ include_once( 'ParsedownExtra.php');
     }
 
     function setNewUser( $tmpUserName ) {
-      error_log('Executing '.'INSERT INTO users (username, md5pass, avatar, role, name) VALUES ( "'.$tmpUserName.'", "'.bin2hex(random_bytes(8)).'", "040-man-13.svg", "1", "empty" )');
+      if (MYBRARY_DEBUG) { error_log('Executing '.'INSERT INTO users (username, md5pass, avatar, role, name) VALUES ( "'.$tmpUserName.'", "'.bin2hex(random_bytes(8)).'", "040-man-13.svg", "1", "empty" )'); }
       return $this->CONN->exec( 'INSERT INTO users (username, md5pass, avatar, role, name) VALUES ( "'.$tmpUserName.'", "'.bin2hex(random_bytes(8)).'", "040-man-13.svg", "1", "empty" )' );
     }
 
     function setUserFullname( $tmpUserName, $tmpFullname ) {
-      error_log('Executing '.'UPDATE users SET name="'.$tmpFullname.'" WHERE username="'.$tmpUserName.'"');
+      if (MYBRARY_DEBUG) { error_log('Executing '.'UPDATE users SET name="'.$tmpFullname.'" WHERE username="'.$tmpUserName.'"'); }
       return $this->CONN->exec( 'UPDATE users SET name="'.$tmpFullname.'" WHERE username="'.$tmpUserName.'"' );
     }
 
     function setUserRole( $tmpUserName, $tmpRole ) {
-      error_log('Executing '.'UPDATE users SET role="'.$tmpRole.'" WHERE username="'.$tmpUserName.'"');
+      if (MYBRARY_DEBUG) { error_log('Executing '.'UPDATE users SET role="'.$tmpRole.'" WHERE username="'.$tmpUserName.'"'); }
       return $this->CONN->exec( 'UPDATE users SET role="'.$tmpRole.'" WHERE username="'.$tmpUserName.'"' );
     }
 
     function setUserAvatar( $tmpUserName, $tmpDefaultIcon ) {
-      error_log('Executing '.'UPDATE users SET avatar="'.$tmpDefaultIcon.'" WHERE username="'.$tmpUserName.'"' );
+      if (MYBRARY_DEBUG) { error_log('Executing '.'UPDATE users SET avatar="'.$tmpDefaultIcon.'" WHERE username="'.$tmpUserName.'"' ); }
       return $this->CONN->exec( 'UPDATE users SET avatar="'.$tmpDefaultIcon.'" WHERE username="'.$tmpUserName.'"' );
     }
 
     function setUsermd5Password( $tmpUserName, $tmpMD5Pass ){
-      error_log('Executing '.'UPDATE users SET md5pass="'.$tmpMD5Pass.'" WHERE username="'.$tmpUserName.'"');
+      if (MYBRARY_DEBUG) { error_log('Executing '.'UPDATE users SET md5pass="'.$tmpMD5Pass.'" WHERE username="'.$tmpUserName.'"'); }
       return $this->CONN->exec( 'UPDATE users SET md5pass="'.$tmpMD5Pass.'" WHERE username="'.$tmpUserName.'"' );
     }
 
@@ -73,7 +73,7 @@ include_once( 'ParsedownExtra.php');
     }
 
     function getUserList() {
-      error_log('Executing '.'SELECT * FROM users' );
+      if (MYBRARY_DEBUG) { error_log('Executing '.'SELECT * FROM users' ); }
       $tmpDataset = $this->CONN->query( 'SELECT * FROM users' );
       $tmpDataArray = [];
       while( $tmpResult = $tmpDataset->fetchArray()) {
@@ -83,7 +83,7 @@ include_once( 'ParsedownExtra.php');
     }
 
     function eraseUserFromDB( $tmpUsername ) {
-      error_log('Executing '.'DELETE FROM users WHERE username="'.$tmpUsername.'"' );
+      if (MYBRARY_DEBUG) { error_log('Executing '.'DELETE FROM users WHERE username="'.$tmpUsername.'"' ); }
       return $this->CONN->exec( 'DELETE FROM users WHERE username="'.$tmpUsername.'"' );
     }
 
@@ -129,7 +129,7 @@ include_once( 'ParsedownExtra.php');
           //YES
           $tmpTagArray = explode( ",", str_replace(" ","", $tmpTagString) ); //Convert a comma separated string to array, stripping all blank spaces.
           foreach ( $tmpTagArray as $tmpTag ) { //Iterate over all tags in string
-            error_log('Processing tag '.$tmpTag );
+            if (MYBRARY_DEBUG) { error_log('Processing tag '.$tmpTag ); }
             if ( $this->getTagWithName( $tmpTag ) == "" ) { //Does the item exist in database?
               //NO
               if ( !$this->setNewTag( $tmpTag ) ) { echo "error creating tag"; return false; } //Print out an error if the tag could not be created
@@ -186,7 +186,7 @@ include_once( 'ParsedownExtra.php');
 
     function getTagCaption( $tmpTagNumber ) {
       $tmpStatement = 'SELECT caption FROM tags WHERE id="'.$tmpTagNumber.'"';
-      error_log( "Executing ".$tmpStatement );
+      if (MYBRARY_DEBUG) { error_log( "Executing ".$tmpStatement ); }
       $tmpDataset = $this->CONN->querySingle( $tmpStatement );
       return $tmpDataset;
     }
@@ -213,14 +213,14 @@ include_once( 'ParsedownExtra.php');
 */
 
     function setNewBook( $tmpUUID, $tmpName, $tmpType, $tmpUploader ) {
-      error_log( 'Executing '.'INSERT INTO books (uuid, title, type, uploader) VALUES ("'.$tmpUUID.'", "'.$tmpName.'", "'.$tmpType.'", "'.$tmpUploader.'" )' );
+      if (MYBRARY_DEBUG) { error_log( 'Executing '.'INSERT INTO books (uuid, title, type, uploader) VALUES ("'.$tmpUUID.'", "'.$tmpName.'", "'.$tmpType.'", "'.$tmpUploader.'" )' ); }
       return $this->CONN->exec('INSERT INTO books (uuid, title, type, uploader) VALUES ("'.$tmpUUID.'", "'.$tmpName.'", "'.$tmpType.'", "'.$tmpUploader.'" )');
     }
 
     function setBookData( $tmpBookID, $tmpTitle, $tmpAuthor, $tmpSummary, $tmpISBN, $tmpTags ) {
       $tmpStatement = 'UPDATE books SET title="'.$tmpTitle.'", author="'.$tmpAuthor.'", summary="'.$tmpSummary.'", isbn="'.$tmpISBN.'" WHERE id='.$tmpBookID;
       $tmpStatement = str_replace( '=""', '=NULL', $tmpStatement ); //Replace empty fields with NULL (otherwise sqlite3 detects duplicity)
-      error_log( "Executing ".$tmpStatement );
+      if (MYBRARY_DEBUG) { error_log( "Executing ".$tmpStatement ); }
       $this->setTagStringForBook( $tmpTags, $tmpBookID );
       return ( $this->CONN->exec( $tmpStatement ) );
     }
@@ -247,13 +247,13 @@ include_once( 'ParsedownExtra.php');
     }
 
     function getBookUUID( $tmpID ) {
-      error_log( "Executing ".'SELECT uuid FROM books WHERE id="'.$tmpID.'"' );
+      if (MYBRARY_DEBUG) { error_log( "Executing ".'SELECT uuid FROM books WHERE id="'.$tmpID.'"' ); }
       $tmpDataset = $this->CONN->querySingle( 'SELECT uuid FROM books WHERE id="'.$tmpID.'"' );
       return $tmpDataset;
     }
 
     function getBookISBN( $tmpID ) {
-      error_log( "Executing ".'SELECT isbn FROM books WHERE id="'.$tmpID.'"' );
+      if (MYBRARY_DEBUG) { error_log( "Executing ".'SELECT isbn FROM books WHERE id="'.$tmpID.'"' ); }
       $tmpDataset = $this->CONN->querySingle( 'SELECT isbn FROM books WHERE id="'.$tmpID.'"' );
       return $tmpDataset;
     }
@@ -274,13 +274,13 @@ include_once( 'ParsedownExtra.php');
     }
 
     function getBookType( $tmpID ) {
-      error_log('Executing '.'SELECT type FROM books WHERE id="'.$tmpID.'"' );
+      if (MYBRARY_DEBUG) { error_log('Executing '.'SELECT type FROM books WHERE id="'.$tmpID.'"' ); }
       $tmpDataset = $this->CONN->querySingle( 'SELECT type FROM books WHERE id="'.$tmpID.'"' );
       return strtolower($tmpDataset);
     }
 
     function getBookUploader( $tmpID ) {
-      error_log('Executing '.'SELECT uploader FROM books WHERE id="'.$tmpID.'"' );
+      if (MYBRARY_DEBUG) { error_log('Executing '.'SELECT uploader FROM books WHERE id="'.$tmpID.'"' ); }
       $tmpDataset = $this->CONN->querySingle( 'SELECT uploader FROM books WHERE id="'.$tmpID.'"' );
       return strtolower($tmpDataset);
     }

@@ -21,7 +21,6 @@ if ( intdiv( (int)$tmpUserRole & (int)2, 2) ) { //Is the user authotized to edit
   //YES
   switch ( $_POST['function'] ) { //Select the function to execute...
       case "edit": //Edit a tag
-          error_log($tmpUsername+" modifies tag ".$_POST['id']." to read ".$_POST['caption']); //Error log
           if ( $myDB->setTagCaption( $_POST['id'], $_POST['caption'] ) ) { //Save the tag name to database successful?
             //YES
             echo 'ok';
@@ -40,7 +39,6 @@ if ( intdiv( (int)$tmpUserRole & (int)2, 2) ) { //Is the user authotized to edit
           }
           break; // Escape switch block
       case "create": //Create a new tag
-          error_log($tmpUsername+" creates tag ".$_POST['caption']); //Error Log
           if ( $myDB->setNewTag($_POST['caption']) ) { //Is the create tag successful?
             //YES
             echo 'ok';

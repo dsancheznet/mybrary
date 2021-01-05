@@ -44,7 +44,6 @@ if ( isset($_POST['function']) ) { //Is the user authotized to edit users?
           }
           break; //Escape switch block
       case "delete": //Remove a tag from database
-          error_log('Removing '.$_POST['username']);
           if (isset($_POST['username'])) {
             if ( $myDB->eraseUserFromDB( $_POST['username'] ) ) {
               echo "ok";

@@ -3,6 +3,7 @@
 include_once('helper-classes.php');
 
 define("MYBRARY_VERSION", "1.0");
+define("MYBRARY_DEBUG", false );
 
   function checkValidUser( $tmpUsername, $tmpPassword ){
     $tmpDatabase = new Database();
@@ -17,13 +18,13 @@ define("MYBRARY_VERSION", "1.0");
   function checkSessionStatus( &$tmpUsername, &$tmpPassword ) {
     $tmpDatabase = new Database();
     if ( session_status() == PHP_SESSION_NONE ) {
-      error_log(__FILE__.' - Checking '.md5($tmpPassword)." against ".$tmpDatabase->md5Password( $tmpUsername ) );
+      if (MYBRARY_DEBUG) { error_log(__FILE__.' - Checking '.md5($tmpPassword)." against ".$tmpDatabase->md5Password( $tmpUsername ) ); }
       if ( md5($tmpPassword) == $tmpDatabase->md5Password( $tmpUsername ) ) {
-        error_log( "Starting Session...".session_status() );
+        if (MYBRARY_DEBUG) { error_log( "Starting Session...".session_status() ); }
         session_start();
         $_SESSION['username'] = $tmpUsername;
         $_SESSION['md5pass'] = md5($tmpPassword);
-        error_log( "Session status...".session_status() );
+        if (MYBRARY_DEBUG) { error_log( "Session status...".session_status() ); }
         return true;
       } else {
         return false;
