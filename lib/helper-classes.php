@@ -17,6 +17,7 @@ include_once( 'ParsedownExtra.php');
      ██████  ███████ ███████ ██   ██ ███████ 
     */
     function md5Password( $tmpUsername ) {
+      if (MYBRARY_DEBUG) { error_log('Executing '.'SELECT md5pass FROM users WHERE username="'.$tmpUsername.'"');}
       $tmpDataset = $this->CONN->querySingle( 'SELECT md5pass FROM users WHERE username="'.$tmpUsername.'"' );
       return $tmpDataset;
     }
@@ -47,27 +48,32 @@ include_once( 'ParsedownExtra.php');
     }
 
     function getFullName( $tmpUsername ) {
+      if (MYBRARY_DEBUG) { error_log('Executing '.'SELECT name FROM users WHERE username="'.$tmpUsername.'"');}
       $tmpDataset = $this->CONN->querySingle( 'SELECT name FROM users WHERE username="'.$tmpUsername.'"' );
       return $tmpDataset;
     }
 
     function getRole( $tmpUsername ) {
+      if (MYBRARY_DEBUG) { error_log('Executing '.'SELECT role FROM users WHERE username="'.$tmpUsername.'"');}
       $tmpDataset = $this->CONN->querySingle( 'SELECT role FROM users WHERE username="'.$tmpUsername.'"' );
       return $tmpDataset;
     }
 
     function getRoleName( $tmpUsername ) {
+      if (MYBRARY_DEBUG) { error_log('Executing '.'SELECT role FROM users WHERE username="'.$tmpUsername.'"' );}
       $tmpDataset = $this->CONN->querySingle( 'SELECT role FROM users WHERE username="'.$tmpUsername.'"' );
       $tmpRolenames = ['Reader', 'User', 'User', 'Administrator', 'Administrator', 'Administrator', 'Administrator']; // Following Flags (bitwise): 001 = Read, 010 = Upload, 100 = Administrator
       return $tmpRolenames[$tmpDataset-1];
     }
 
     function getAvatar( $tmpUsername ) {
+      if (MYBRARY_DEBUG) { error_log('Executing '.'SELECT avatar FROM users WHERE username="'.$tmpUsername.'"' );}
       $tmpDataset = $this->CONN->querySingle( 'SELECT avatar FROM users WHERE username="'.$tmpUsername.'"' );
       return $tmpDataset;
     }
 
     function getUserCount() {
+      if (MYBRARY_DEBUG) { error_log('Executing '.'SELECT COUNT(*) as count FROM users' );}
       $tmpDataset = $this->CONN->querySingle( 'SELECT COUNT(*) as count FROM users' );
       return $tmpDataset;
     }
@@ -96,6 +102,7 @@ include_once( 'ParsedownExtra.php');
 */
 
     function getTypeCount( $tmpType = "pdf" ) {
+      if (MYBRARY_DEBUG) { error_log('Executing '.'SELECT COUNT(*) as count FROM books WHERE type="'.$tmpType.'"' );}
       $tmpDataset = $this->CONN->querySingle( 'SELECT COUNT(*) as count FROM books WHERE type="'.$tmpType.'"' );
       return $tmpDataset;
     }
@@ -109,19 +116,23 @@ include_once( 'ParsedownExtra.php');
 */
 
     function setNewTag( $tmpCaption ) {
+      if (MYBRARY_DEBUG) { error_log('Executing '.'INSERT INTO tags (caption) VALUES ("'.strtolower($tmpCaption).'")');}
       return $this->CONN->exec('INSERT INTO tags (caption) VALUES ("'.strtolower($tmpCaption).'")');
     }
 
     function setTagCaption( $tmpID, $tmpCaption ) {
+      if (MYBRARY_DEBUG) { error_log('Executing '.'UPDATE tags SET caption="'.strtolower($tmpCaption).'" WHERE id='.$tmpID );}
       return $this->CONN->exec( 'UPDATE tags SET caption="'.strtolower($tmpCaption).'" WHERE id='.$tmpID );
     }
 
     function setTagForBook( $tmpTagID, $tmpBookID ) {
+      if (MYBRARY_DEBUG) { error_log('Executing '.'INSERT INTO tags2books (book, tag) VALUES ( "'.$tmpBookID.'","'.$tmpTagID.'" )');}
       //Check if the book has this tag assigned already.
       return $this->CONN->exec( 'INSERT INTO tags2books (book, tag) VALUES ( "'.$tmpBookID.'","'.$tmpTagID.'" )');
     }
 
     function setTagStringForBook( $tmpTagString, $tmpBookID ) {
+      if (MYBRARY_DEBUG) { error_log('Executing '.'DELETE FROM tags2books WHERE book="'.$tmpBookID.'"' );}
       $this->CONN->exec( 'DELETE FROM tags2books WHERE book="'.$tmpBookID.'"' ); //Clean all tags from the record
       if ( !$tmpTagString == "" ) { //Do we havew a tag String?
         //YES
@@ -148,6 +159,7 @@ include_once( 'ParsedownExtra.php');
     }
 
     function getTagStringForBook( $tmpBookID ) {
+      if (MYBRARY_DEBUG) { error_log( "Executing ".'SELECT tag FROM tags2books WHERE book="'.$tmpBookID.'"' );}
       $tmpDataset = $this->CONN->query( 'SELECT tag FROM tags2books WHERE book="'.$tmpBookID.'"' );
       if ( $tmpDataset == null ) { return ""; }
       $tmpTagSet = [];
@@ -162,20 +174,24 @@ include_once( 'ParsedownExtra.php');
     }
 
     function getTagCountForBook( $tmpBookID ) {
+      if (MYBRARY_DEBUG) { error_log( "Executing ".'SELECT COUNT(*) as count FROM tags2books WHERE book="'.$tmpBookID.'"' );}
       $tmpDataset = $this->CONN->querySingle( 'SELECT COUNT(*) as count FROM tags2books WHERE book="'.$tmpBookID.'"' );
       return $tmpDataset;
     }
 
     function getTagCount() {
+      if (MYBRARY_DEBUG) { error_log( "Executing ".'SELECT COUNT(*) as count FROM tags' );}
       $tmpDataset = $this->CONN->querySingle( 'SELECT COUNT(*) as count FROM tags' );
       return $tmpDataset;
     }
 
     function getTagWithName( $tmpName ) {
+      if (MYBRARY_DEBUG) { error_log( "Executing ".'SELECT id FROM tags WHERE caption="'.strtolower($tmpName).'"' );}
       return $this->CONN->querySingle( 'SELECT id FROM tags WHERE caption="'.strtolower($tmpName).'"' );
     }
 
     function getTagList() {
+      if (MYBRARY_DEBUG) { error_log( "Executing ".'SELECT * FROM tags ORDER BY caption' );}
       $tmpDataset = $this->CONN->query( 'SELECT * FROM tags ORDER BY caption' );
       $tmpDataArray = [];
       while( $tmpResult = $tmpDataset->fetchArray()) {
@@ -192,6 +208,7 @@ include_once( 'ParsedownExtra.php');
     }
 
     function getTagsForBook( $tmpID ) {
+      if (MYBRARY_DEBUG) { error_log( "Executing ".'SELECT tag FROM tags2books WHERE book='.$tmpID );}
       $tmpDataset = $this->CONN->query( 'SELECT tag FROM tags2books WHERE book='.$tmpID );
       $tmpDataArray = [];
       while( $tmpResult = $tmpDataset->fetchArray()) {
@@ -201,6 +218,7 @@ include_once( 'ParsedownExtra.php');
     }
 
     function eraseTagFromDB( $tmpID ) {
+      if (MYBRARY_DEBUG) { error_log( "Executing ".'DELETE FROM tags WHERE id="'.$tmpID.'"') | $this->CONN->exec('DELETE FROM tags2books WHERE tag="'.$tmpID.'"');}
       return $this->CONN->exec('DELETE FROM tags WHERE id="'.$tmpID.'"') | $this->CONN->exec('DELETE FROM tags2books WHERE tag="'.$tmpID.'"');
     }
 
@@ -226,11 +244,11 @@ include_once( 'ParsedownExtra.php');
     }
 
     function getBookCount() {
-      $tmpDataset = $this->CONN->querySingle( 'SELECT COUNT(*) as count FROM books' );
-      return $tmpDataset;
+      if (MYBRARY_DEBUG) { error_log( "Executing ".'SELECT COUNT(*) as count FROM books' );}
+      return $this->CONN->querySingle( 'SELECT COUNT(*) as count FROM books' );
     }
 
-    function getBookList( $tmpType="", $tmpSearchTerm="", $tmpTag="" ) {
+    function getBookList( $tmpType="", $tmpSearchTerm="", $tmpTag="", $tmpOrdering=" ORDER BY id DESC" ) { //By default, the newest items appear first. You may change this by altering $tmpOrdering
       $tmpBaseSearch = "SELECT * FROM books ";
       $tmpBaseSearch.= ($tmpTag<>"")?"INNER JOIN tags2books ON tags2books.book=books.id ":"";
       $tmpBaseArray = [];
@@ -238,7 +256,8 @@ include_once( 'ParsedownExtra.php');
       if ( $tmpType<>"" ) { $tmpBaseArray[] = "type='".$tmpType."'"; }
       if ( $tmpSearchTerm<>"" ) { $tmpBaseArray[] = "title LIKE '%".$tmpSearchTerm."%'"; }
       $tmpBaseSearch.=((count($tmpBaseArray)>0)?"WHERE ":"").implode(" AND ", $tmpBaseArray);
-      $tmpDataset = $this->CONN->query( $tmpBaseSearch." ORDER BY id DESC" );
+      $tmpDataset = $this->CONN->query( $tmpBaseSearch.$tmpOrdering );
+      if (MYBRARY_DEBUG) { error_log( "Executing ".$tmpBaseSearch ); }
       $tmpDataArray = [];
       while( $tmpResult = $tmpDataset->fetchArray()) {
         array_push($tmpDataArray, $tmpResult );
@@ -248,19 +267,17 @@ include_once( 'ParsedownExtra.php');
 
     function getBookUUID( $tmpID ) {
       if (MYBRARY_DEBUG) { error_log( "Executing ".'SELECT uuid FROM books WHERE id="'.$tmpID.'"' ); }
-      $tmpDataset = $this->CONN->querySingle( 'SELECT uuid FROM books WHERE id="'.$tmpID.'"' );
-      return $tmpDataset;
+      return $this->CONN->querySingle( 'SELECT uuid FROM books WHERE id="'.$tmpID.'"' );
     }
 
     function getBookISBN( $tmpID ) {
       if (MYBRARY_DEBUG) { error_log( "Executing ".'SELECT isbn FROM books WHERE id="'.$tmpID.'"' ); }
-      $tmpDataset = $this->CONN->querySingle( 'SELECT isbn FROM books WHERE id="'.$tmpID.'"' );
-      return $tmpDataset;
+      return $this->CONN->querySingle( 'SELECT isbn FROM books WHERE id="'.$tmpID.'"' );
     }
 
     function getBookTitle( $tmpID ) {
-      $tmpDataset = $this->CONN->querySingle( 'SELECT title FROM books WHERE id="'.$tmpID.'"' );
-      return $tmpDataset;
+      if (MYBRARY_DEBUG) { error_log( "Executing ".'SELECT title FROM books WHERE id="'.$tmpID.'"' );}
+      return $this->CONN->querySingle( 'SELECT title FROM books WHERE id="'.$tmpID.'"' );
     }
 
     function getBookSummary( $tmpID ) {
