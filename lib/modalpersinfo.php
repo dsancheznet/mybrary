@@ -28,8 +28,8 @@
 <button class="uk-modal-close-default" type="button" uk-close></button>
 
 <h4>· User Data ·</h4>
-
-<img id="avatar-image" class="uk-align-center" src="../img/avatars/<?php echo $myDB->getAvatar( $tmpUserToModify ); ?>" width="100px;">
+<?php $tmpUserAvatar = $myDB->getAvatar( $tmpUserToModify );?>
+<img id="avatar-image" class="uk-align-center" src="../img/avatars/<?php echo $tmpUserAvatar; ?>" width="100px;">
 <!--<form>-->
   <label class="uk-form-label" for="form-stacked-select">Avatar</label>
     <select id="avatar-selector" class="uk-select" onchange="AvatarChanged()">
@@ -37,7 +37,9 @@
       chdir('img/avatars');
       $tmpAvatarList = glob('./*.svg');
       foreach($tmpAvatarList as $tmpAvatar){
-        echo '<option value="'.basename($tmpAvatar).'">'.basename($tmpAvatar).'</option>';
+        echo '<option value="'.basename($tmpAvatar).'"';
+        echo ( basename($tmpAvatar)==$tmpUserAvatar )?" selected":"";
+        echo '>'.basename($tmpAvatar).'</option>';
       }
       chdir('../../');
 ?>

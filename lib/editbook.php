@@ -17,7 +17,7 @@ if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
   exit();
 }
 
-if ( intdiv( (int)$tmpUserRole & (int)2, 2 ) ) { //Is the user authotized to edit tags?
+if ( intdiv( (int)$tmpUserRole & (int)2, 2 ) ) { //Is the user authotized to edit books?
   //YES
   if (isset( $_POST['bookid'] )) { //Do we have a bookid supplied
     //YES

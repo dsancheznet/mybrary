@@ -79,6 +79,47 @@ function SaveUserData() {
   xhr.send( poststring );
 }
 
+function DeleteUserFromDB( username ) {
+  let xhr = new XMLHttpRequest();
+  if (confirm("Sure you want to delete '"+username+"' permanently from database?")) {
+    xhr.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        if ( this.responseText == "error" ) {
+          alert('Unknown Error.');
+        } else {
+          ShowUserAdminForm();
+        }
+      }
+    };
+    xhr.open("POST", "lib/edituser.php", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send("function=delete&username="+username);
+  } else {
+    return;
+  }
+}
+
+function CreateNewUser() {
+  var username = prompt( "New username:" );
+  if (username != null) {
+    let xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        if ( this.responseText == "error" ) {
+          alert('Unknown Error.');
+        } else {
+          ShowUserAdminForm();
+        }
+      }
+    };
+    xhr.open("POST", "lib/edituser.php", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send("function=create&username="+username);
+  } else {
+    return;
+  }
+}
+
 /*
 ██    ██ ██████  ██       ██████   █████  ██████ 
 ██    ██ ██   ██ ██      ██    ██ ██   ██ ██   ██ 
@@ -206,7 +247,7 @@ function ShowTagAdminForm() {
       document.getElementById("modal-body").innerHTML = this.responseText;
     }
   };
-  xhr.open("GET", "lib/tags.php", true);
+  xhr.open("GET", "lib/modaltags.php", true);
   xhr.send();
 }
 

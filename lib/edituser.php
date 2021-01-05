@@ -17,7 +17,7 @@ if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
   exit();
 }
 
-if ( isset($_POST['function']) ) { //Is the user authotized to edit tags?
+if ( isset($_POST['function']) ) { //Is the user authotized to edit users?
   //YES
   switch ( $_POST['function'] ) { //Select the function to execute...
       case "edit": //Edit a tag
@@ -44,6 +44,7 @@ if ( isset($_POST['function']) ) { //Is the user authotized to edit tags?
           }
           break; //Escape switch block
       case "delete": //Remove a tag from database
+          error_log('Removing '.$_POST['username']);
           if (isset($_POST['username'])) {
             if ( $myDB->eraseUserFromDB( $_POST['username'] ) ) {
               echo "ok";
@@ -56,7 +57,7 @@ if ( isset($_POST['function']) ) { //Is the user authotized to edit tags?
           break; // Escape switch block
       case "create": //Create a new tag
           if (isset( $_POST['username'] )) {
-            if ( $myDB->setNewUser( $_POST['username'], md5($_POST['password'], $_POST['fullname'], $_POST['role'] ) ) ) {
+            if ( $myDB->setNewUser( $_POST['username'] ) ) {
               echo "ok";
             } else {
               echo "error creating user";

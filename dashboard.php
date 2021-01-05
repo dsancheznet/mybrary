@@ -21,7 +21,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title><?php echo $tmpUsername;?>'s Dashboard</title>
+		<title><?php echo $tmpUsername;?>'s Dashboard mybrary Version <?php echo MYBRARY_VERSION;?></title>
 		<!-- CSS FILES -->
 		<!-- UIkit CSS -->
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.5/dist/css/uikit.min.css" />
@@ -128,7 +128,9 @@ Y88b  d88P  888   888  .d88P 888        888        888   888   d88P 888  T88b   
 -->
 
 				</div>
-
+				<div class="uk-text-center uk-text-light" style="font-size: 8px;">
+					mybrary engine <?php echo MYBRARY_VERSION;?>
+				</div>
 			</div>
 		</aside>
 <!-- /LEFT BAR -->

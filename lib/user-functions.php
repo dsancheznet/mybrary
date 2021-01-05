@@ -2,6 +2,8 @@
 
 include_once('helper-classes.php');
 
+define("MYBRARY_VERSION", "1.0");
+
   function checkValidUser( $tmpUsername, $tmpPassword ){
     $tmpDatabase = new Database();
 
@@ -38,9 +40,10 @@ include_once('helper-classes.php');
   }
 
   function insertBookMenu( $tmpBook ) {
+    //TODO : When the proposed change to uikit regarding mimetype icons has propagated, change the line reading "icon: file-pdf" target=" to "icon: file-'.$tmpBook['type'].'"
     return '<ul class="uk-iconnav">
-    <li><a href="lib/viewer.php?id='.$tmpBook['id'].'" uk-icon="icon: file-pdf" target="_blank" rel="noopener noreferrer"></a></li>
-    <li><a uk-icon="icon: cloud-download"></a></li>
+    <li><a href="lib/view.php?id='.$tmpBook['id'].'" uk-icon="icon: file-pdf" target="_blank" rel="noopener noreferrer"></a></li>
+    <li><a href="lib/download.php?id='.$tmpBook['id'].'" uk-icon="icon: cloud-download" target="_blank" rel="noopener noreferrer"></a></li>
     <li><a href="#modal-dash" uk-icon="icon: file-text" onclick="ShowBookSummary('.$tmpBook['id'].')" uk-toggle></a></li>
     <li><a uk-icon="icon: trash" onclick="DeleteBookWithId('.$tmpBook['id'].')"></a></li>
     </ul>';

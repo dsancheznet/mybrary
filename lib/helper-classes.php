@@ -21,9 +21,9 @@ include_once( 'ParsedownExtra.php');
       return $tmpDataset;
     }
 
-    function setNewUser( $tmpUserName, $tmpMD5Pass, $tmpFullname, $tmpRole, $tmpDefaultIcon = "040-man-13.svg" ) {
-      error_log('Executing '.'INSERT INTO users (username, md5pass, avatar, role, name) VALUES ( "'.$tmpUserName.'", "'.$tmpMD5Pass.'", "'.$tmpDefaultIcon.'", '.$tmpRole.', "'.$tmpFullname.'" )');
-      return $this->CONN->exec( 'INSERT INTO users (username, md5pass, avatar, role, name) VALUES ( "'.$tmpUserName.'", "'.$tmpMD5Pass.'", "'.$tmpDefaultIcon.'", '.$tmpRole.', "'.$tmpFullname.'" )');
+    function setNewUser( $tmpUserName ) {
+      error_log('Executing '.'INSERT INTO users (username, md5pass, avatar, role, name) VALUES ( "'.$tmpUserName.'", "'.bin2hex(random_bytes(8)).'", "040-man-13.svg", "1", "empty" )');
+      return $this->CONN->exec( 'INSERT INTO users (username, md5pass, avatar, role, name) VALUES ( "'.$tmpUserName.'", "'.bin2hex(random_bytes(8)).'", "040-man-13.svg", "1", "empty" )' );
     }
 
     function setUserFullname( $tmpUserName, $tmpFullname ) {
@@ -32,8 +32,8 @@ include_once( 'ParsedownExtra.php');
     }
 
     function setUserRole( $tmpUserName, $tmpRole ) {
-      error_log('Executing '.'UPDATE users SET role=".$tmpRole." WHERE username=".$tmpUserName."');
-      return $this->CONN->exec( 'UPDATE users SET role=".$tmpRole." WHERE username=".$tmpUserName."' );
+      error_log('Executing '.'UPDATE users SET role="'.$tmpRole.'" WHERE username="'.$tmpUserName.'"');
+      return $this->CONN->exec( 'UPDATE users SET role="'.$tmpRole.'" WHERE username="'.$tmpUserName.'"' );
     }
 
     function setUserAvatar( $tmpUserName, $tmpDefaultIcon ) {
@@ -73,6 +73,7 @@ include_once( 'ParsedownExtra.php');
     }
 
     function getUserList() {
+      error_log('Executing '.'SELECT * FROM users' );
       $tmpDataset = $this->CONN->query( 'SELECT * FROM users' );
       $tmpDataArray = [];
       while( $tmpResult = $tmpDataset->fetchArray()) {
@@ -82,7 +83,8 @@ include_once( 'ParsedownExtra.php');
     }
 
     function eraseUserFromDB( $tmpUsername ) {
-      return $this->CONN->exec( 'DELETE FROM users WHERE username=".$tmpUsername."' );
+      error_log('Executing '.'DELETE FROM users WHERE username="'.$tmpUsername.'"' );
+      return $this->CONN->exec( 'DELETE FROM users WHERE username="'.$tmpUsername.'"' );
     }
 
 /*
@@ -211,6 +213,7 @@ include_once( 'ParsedownExtra.php');
 */
 
     function setNewBook( $tmpUUID, $tmpName, $tmpType, $tmpUploader ) {
+      error_log( 'Executing '.'INSERT INTO books (uuid, title, type, uploader) VALUES ("'.$tmpUUID.'", "'.$tmpName.'", "'.$tmpType.'", "'.$tmpUploader.'" )' );
       return $this->CONN->exec('INSERT INTO books (uuid, title, type, uploader) VALUES ("'.$tmpUUID.'", "'.$tmpName.'", "'.$tmpType.'", "'.$tmpUploader.'" )');
     }
 
@@ -235,7 +238,7 @@ include_once( 'ParsedownExtra.php');
       if ( $tmpType<>"" ) { $tmpBaseArray[] = "type='".$tmpType."'"; }
       if ( $tmpSearchTerm<>"" ) { $tmpBaseArray[] = "title LIKE '%".$tmpSearchTerm."%'"; }
       $tmpBaseSearch.=((count($tmpBaseArray)>0)?"WHERE ":"").implode(" AND ", $tmpBaseArray);
-      $tmpDataset = $this->CONN->query( $tmpBaseSearch );
+      $tmpDataset = $this->CONN->query( $tmpBaseSearch." ORDER BY id DESC" );
       $tmpDataArray = [];
       while( $tmpResult = $tmpDataset->fetchArray()) {
         array_push($tmpDataArray, $tmpResult );
@@ -244,11 +247,13 @@ include_once( 'ParsedownExtra.php');
     }
 
     function getBookUUID( $tmpID ) {
+      error_log( "Executing ".'SELECT uuid FROM books WHERE id="'.$tmpID.'"' );
       $tmpDataset = $this->CONN->querySingle( 'SELECT uuid FROM books WHERE id="'.$tmpID.'"' );
       return $tmpDataset;
     }
 
     function getBookISBN( $tmpID ) {
+      error_log( "Executing ".'SELECT isbn FROM books WHERE id="'.$tmpID.'"' );
       $tmpDataset = $this->CONN->querySingle( 'SELECT isbn FROM books WHERE id="'.$tmpID.'"' );
       return $tmpDataset;
     }
@@ -269,11 +274,13 @@ include_once( 'ParsedownExtra.php');
     }
 
     function getBookType( $tmpID ) {
+      error_log('Executing '.'SELECT type FROM books WHERE id="'.$tmpID.'"' );
       $tmpDataset = $this->CONN->querySingle( 'SELECT type FROM books WHERE id="'.$tmpID.'"' );
       return strtolower($tmpDataset);
     }
 
     function getBookUploader( $tmpID ) {
+      error_log('Executing '.'SELECT uploader FROM books WHERE id="'.$tmpID.'"' );
       $tmpDataset = $this->CONN->querySingle( 'SELECT uploader FROM books WHERE id="'.$tmpID.'"' );
       return strtolower($tmpDataset);
     }

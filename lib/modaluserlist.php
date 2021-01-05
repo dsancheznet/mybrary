@@ -26,11 +26,38 @@
 
   <button class="uk-modal-close-default" type="button" uk-close></button>
   <h4>· Users ·</h4>
-
   <!-- /HTML CODE -->
-  <?php
+<?php
+    $tmpUserList = $myDB->getUserList();
+?>
+  <table class="uk-table uk-table-striped uk-text-small uk-table-hover">
+      <thead>
+          <tr>
+              <th>id</th>
+              <th>name</th>
+              <th>role</th>
+              <th>options</th>
+          </tr>
+      </thead>
+      <tbody>
+<?php
+      foreach ( $tmpUserList as $tmpUser ) { //Iterate over available tags; attention: variable names are different (plural vs singular)
+        echo '<tr>
+          <td> '.$tmpUser['username'].'
+          <td>'.$tmpUser['name'].'</div> </td>
+          <td>'.$tmpUser['role'].'</div> </td>
+          <td>
+          <span uk-icon="pencil" onclick="ShowPersonalInfoForm(\''.$tmpUser['username'].'\')"></span>
+          <span uk-icon="trash" onclick="DeleteUserFromDB(\''.$tmpUser['username'].'\')"></span>
+          </td>';
+        echo '</tr>';
+      }
+?>
+      </tbody>
+  </table>
 
-  print_r($myDB->getUserList());
+  <button class="uk-button uk-button-primary uk-width-1-1 uk-padding-small uk-margin-remove-bottom uk-margin-top" onclick="CreateNewUser()"><span uk-icon="plus-circle">Create new User </button>
 
-  }
-  ?>
+<?php
+}
+?>

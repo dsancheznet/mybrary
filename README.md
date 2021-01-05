@@ -48,6 +48,12 @@ I personally run a Synology NAS with the nginx webserver and php version 7.4. Ju
 
 This php script intentionally does *not* require/use a mariadb database server on the host. It uses sqlite3 instead. This strategy has its advantages but algo some disadvantages. As the library is multi-user but mono-library ( i.e. all registered users can *read* - and some can *edit* and *upload* books ) the use of sqlite3 can slow down the execution of the script...but as the intended use is for family sharing of books or small community access, it should not pose a big problem. It would be easily possible though, to port the software to use mariadb or similar...but this is something that I have no need to do, so I leave this task to others.
 
+Let me quote sqlite's website for those with doubts on performance:
+
+> SQLite works great as the database engine for most low to medium traffic websites (which is to say, most websites). The amount of web traffic that SQLite can handle depends on how heavily the website uses its database. Generally speaking, any site that gets fewer than 100K hits/day should work fine with SQLite. The 100K hits/day figure is a conservative estimate, not a hard upper bound. SQLite has been demonstrated to work with 10 times that amount of traffic.
+
+I guess, we can safely assume that no family has more than 100.000 per day on their library...
+
 Every book, can only exist once. It is *not* possible to have different copies of the same book in different formats. Please choose the best format for your needs and convert it to other formats if needed ( use Calibre for that ).
 
 
@@ -71,6 +77,4 @@ Markdown parser component [Parsedown](https://parsedown.org/) and [Parsedown Ext
 
 ### TODO
 
-- [ ] Finish User creation dialog
-- [ ] Write download function
 - [ ] Verbose error messages
