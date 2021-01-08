@@ -310,7 +310,7 @@ include_once( 'ParsedownExtra.php');
     function eraseBookFromDB( $tmpID ) {
       if (MYBRARY_DEBUG) { error_log('Executing '.'SELECT uuid, type FROM books WHERE id="'.$tmpID.'"' ); }
       $tmpResult = $this->CONN->querySingle('SELECT uuid, type FROM books WHERE id="'.$tmpID.'"', true );
-      unlink( 'data/books/'.$tmpResult['uuid'].".".$tmpResult['type'] );
+      unlink( MYBRARY_MEDIA_PATH.'books/'.$tmpResult['uuid'].".".$tmpResult['type'] );
       return ( $this->CONN->exec('DELETE FROM books WHERE id="'.$tmpID.'"') & $this->CONN->exec('DELETE FROM tags2books WHERE book="'.$tmpID.'"') );
     }
 

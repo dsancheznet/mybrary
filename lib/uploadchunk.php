@@ -15,6 +15,7 @@
       for ( $tmpCounter = 0; $tmpCounter < count( $_FILES['files']['name'] ); $tmpCounter++ ) {
         $tmpNewUUID = $myDB->getNewBookUUID();
         $tmpBookStorage = MYBRARY_MEDIA_PATH."books/";
+        $tmpCoverStorage = MYBRARY_MEDIA_PATH."covers/";
         $tmpFileName = $_FILES['files']['tmp_name'][$tmpCounter];
         switch ( $_FILES['files']['type'][$tmpCounter] ) {
           case 'application/pdf':
@@ -29,12 +30,14 @@
           case 'text/plain':
               $tmpFileExtension = 'txt';
               break;
+/* I'll leave this prepared for comics as well, until I find a suitable reader
           case 'text/plain':
               $tmpFileExtension = 'cbr';
               break;
           case '':
               $tmpFileExtension = 'cbz';
               break;
+*/
           default:
               echo "Error: No recognized file format detected";
               exit;
@@ -42,6 +45,7 @@
         if ( move_uploaded_file( $tmpFileName, $tmpBookStorage.$tmpNewUUID.".".$tmpFileExtension ) ) {
           if ( $myDB->setNewBook( $tmpNewUUID, $_FILES['files']['name'][$tmpCounter], $tmpFileExtension, $tmpUsername ) ) {
             echo "ok";
+            if ( $tmpFileExtension=='pdf' ) { exec("convert ".$tmpBookStorage.$tmpNewUUID.".".$tmpFileExtension."[0] ".$tmpCoverStorage.$tmpNewUUID.".jpg"); }
           }
         } else {
           echo "Error: Could not move the file from ".$tmpFileName." to ".$tmpBookStorage.$tmpFileName.".".$tmpFileExtension." <br />";
