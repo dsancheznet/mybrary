@@ -7,7 +7,7 @@ include_once( 'ParsedownExtra.php');
 
     private $CONN = "";
     function __construct( ) {
-      $this->CONN = new SQLite3( 'db/mybrary.db' );
+      $this->CONN = new SQLite3( MYBRARY_DB_PATH );
     }
     /*
     ██    ██ ███████ ███████ ██████  ███████ 
@@ -209,12 +209,15 @@ include_once( 'ParsedownExtra.php');
 
     function getTagsForBook( $tmpID ) {
       if (MYBRARY_DEBUG) { error_log( "Executing ".'SELECT tag FROM tags2books WHERE book='.$tmpID );}
-      $tmpDataset = $this->CONN->query( 'SELECT tag FROM tags2books WHERE book='.$tmpID );
-      $tmpDataArray = [];
-      while( $tmpResult = $tmpDataset->fetchArray()) {
-        array_push($tmpDataArray, $this->getTagCaption( $tmpResult['tag'] ) );
+      if ( $tmpDataset = $this->CONN->query( 'SELECT tag FROM tags2books WHERE book='.$tmpID ) ){
+        $tmpDataArray = [];
+        while( $tmpResult = $tmpDataset->fetchArray()) {
+          array_push($tmpDataArray, $this->getTagCaption( $tmpResult['tag'] ) );
+        }
+        return $tmpDataArray;
+      } else {
+        return false;
       }
-      return $tmpDataArray;
     }
 
     function eraseTagFromDB( $tmpID ) {
@@ -248,7 +251,8 @@ include_once( 'ParsedownExtra.php');
       return $this->CONN->querySingle( 'SELECT COUNT(*) as count FROM books' );
     }
 
-    function getBookList( $tmpType="", $tmpSearchTerm="", $tmpTag="", $tmpOrdering=" ORDER BY id DESC" ) { //By default, the newest items appear first. You may change this by altering $tmpOrdering
+    function getBookList( $tmpType="", $tmpSearchTerm="", $tmpTag="", $tmpOrdering=" ORDER BY id DESC" ) {
+      //By default, the newest items appear first. You may change this by altering $tmpOrdering
       $tmpBaseSearch = "SELECT * FROM books ";
       $tmpBaseSearch.= ($tmpTag<>"")?"INNER JOIN tags2books ON tags2books.book=books.id ":"";
       $tmpBaseArray = [];
@@ -281,11 +285,12 @@ include_once( 'ParsedownExtra.php');
     }
 
     function getBookSummary( $tmpID ) {
-      $tmpDataset = $this->CONN->querySingle( 'SELECT summary FROM books WHERE id="'.$tmpID.'"' );
-      return $tmpDataset;
+      if (MYBRARY_DEBUG) { error_log( 'Executing '.'SELECT summary FROM books WHERE id="'.$tmpID.'"' ); }
+      return $this->CONN->querySingle( 'SELECT summary FROM books WHERE id="'.$tmpID.'"' );
     }
 
     function getBookAuthor( $tmpID ) {
+      if (MYBRARY_DEBUG) { error_log( 'Executing '.'SELECT author FROM books WHERE id="'.$tmpID.'"' ); }
       $tmpDataset = $this->CONN->querySingle( 'SELECT author FROM books WHERE id="'.$tmpID.'"' );
       return $tmpDataset;
     }
@@ -303,13 +308,39 @@ include_once( 'ParsedownExtra.php');
     }
 
     function eraseBookFromDB( $tmpID ) {
+      if (MYBRARY_DEBUG) { error_log('Executing '.'SELECT uuid, type FROM books WHERE id="'.$tmpID.'"' ); }
       $tmpResult = $this->CONN->querySingle('SELECT uuid, type FROM books WHERE id="'.$tmpID.'"', true );
       unlink( 'data/books/'.$tmpResult['uuid'].".".$tmpResult['type'] );
       return ( $this->CONN->exec('DELETE FROM books WHERE id="'.$tmpID.'"') & $this->CONN->exec('DELETE FROM tags2books WHERE book="'.$tmpID.'"') );
     }
 
+    function getBookCoverData( $tmpUUID ) {
+      if ( MYBRARY_DEBUG ) { error_log( 'Looking for '.getcwd()." - ".MYBRARY_MEDIA_PATH.'covers/'.$tmpUUID.'.jpg' ); }
+      if ( $this->bookHasCover( $tmpUUID ) ) {
+        return file_get_contents( MYBRARY_MEDIA_PATH.'covers/'.$tmpUUID.'.jpg' );
+      } else {
+        return false;
+      }
+    }
+
     function bookHasCover( $tmpUUID ) {
-      return file_exists( 'data/covers/'.$tmpUUID.'.jpg' );
+      if ( MYBRARY_DEBUG ) { error_log( 'Looking for '.getcwd()." - ".MYBRARY_MEDIA_PATH.'covers/'.$tmpUUID.'.jpg' ); }
+      return file_exists( MYBRARY_MEDIA_PATH.'covers/'.$tmpUUID.'.jpg' );
+    }
+
+    function getNewBookUUID() {
+      /* This function generates an UUID that has not been taken by any file yet.
+      While it is highly unlikely that there would be two equal numbers generated,
+      people do win lottery as well, so...*/
+      //Generate an UUID
+      $tmpUUID = UUID::v4();
+      //While the file exists, do...
+      while ( file_exists( MYBRARY_MEDIA_PATH.'books/'.$tmpUUID.'.pdf' ) or file_exists( MYBRARY_MEDIA_PATH.'books/'.$tmpUUID.'.epub' ) or file_exists( MYBRARY_MEDIA_PATH.'books/'.$tmpUUID.'.txt' ) or file_exists( MYBRARY_MEDIA_PATH.'books/'.$tmpUUID.'.md' ) ) {
+        //..generate a new uuid
+        $tmpUUID = UUID::v4();
+      }
+      //Return the unique UUID
+      return $tmpUUID;
     }
 
   }
@@ -430,12 +461,12 @@ include_once( 'ParsedownExtra.php');
     }
   }
 
-class FakeDown {
-  //A fake parsedown behaviour imitating class.
+  class FakeDown {
+    //A fake parsedown behaviour imitating class.
 
-  function text( $tmpText ) {
-      echo str_replace( "\n", "<br />", $tmpText );
+    function text( $tmpText ) {
+        echo str_replace( "\n", "<br />", $tmpText );
+    }
   }
-}
 
 ?>

@@ -281,8 +281,10 @@ function DeleteTag( tagID, tagCaption ) {
         if ( this.responseText == "error" ) {
           alert('Unknown Error.');
         } else {
-          ReloadSection("side-tags", "sidetags.php");
           ShowTagAdminForm();
+          ExecuteSearch();
+          ReloadSection("side-tags", "sidetags.php");
+          ReloadSection("info-table", "infotable.php");
         }
       }
     };
@@ -303,9 +305,9 @@ function ReadAndCreateTag() {
         if ( this.responseText == "error" ) {
           alert('Unknown Error.');
         } else {
+          ShowTagAdminForm();
           ReloadSection("info-table", "infotable.php");
           ReloadSection("side-tags", "sidetags.php");
-          ShowTagAdminForm();
       }
     }
   };
@@ -373,6 +375,9 @@ function SaveBookData( bookID ) {
         document.getElementById("save-message").hidden = false;
         document.getElementById("save-paragraph").innerHTML = "|"+tmpMessage+"|";
       }
+      ExecuteSearch();
+      ReloadSection("search-bar", "searchbar.php");
+      ReloadSection("side-tags", "sidetags.php");
     }
   };
   xhr.open("POST", "lib/editbook.php", true);
@@ -384,9 +389,6 @@ function SaveBookData( bookID ) {
     "&summary="+document.getElementById("bookform-summary").value+
     "&isbn="+document.getElementById("bookform-isbn").value+
     "&tags="+document.getElementById("bookform-tags").value );
-  ExecuteSearch();
-  ReloadSection("side-tags", "sidetags.php");
-  ReloadSection("search-bar", "searchbar.php");
 }
 
 function ShowBookSummary( bookID ) {
@@ -414,12 +416,12 @@ function ResetSearchTerm() {
   ExecuteSearch();
 }
 
-function  RegisterTypeSearch( typeToSearch ) {
+function RegisterTypeSearch( typeToSearch ) {
   document.getElementById('type-filter').value = typeToSearch;
   ExecuteSearch();
 }
 
-function  RegisterTagSearch( tagToSearch ) {
+function RegisterTagSearch( tagToSearch ) {
   document.getElementById('tag-filter').value = tagToSearch;
   ExecuteSearch();
 }
