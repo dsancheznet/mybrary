@@ -69,5 +69,6 @@ if ( isset($_POST['function']) ) { //Is the user authotized to edit users?
           echo "error: no function was selected";
   }
 } else {
+  //NO
   echo "error: no funcion selected";
 }
