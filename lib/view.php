@@ -23,16 +23,17 @@
     switch ( $myDB->getBookType( $_GET['id'] ) ) {
       case "pdf":
         if ( MYBRARY_HIDE_BOOKS ) {
-          header("Location: pdf.html?file=getbook.php?id%3D".$_GET['id'] );
+          $tmpPath = "getbook.php?id=".$_GET['id'];
+          header("Location: pdf.html?file=".urlencode($tmpPath) );
         } else {
           header("Location: pdf.html?file=../".$tmpBookStore.$myDB->getBookUUID( $_GET['id'] ).".pdf");
         }
         exit;
         break;
       case "epub":
-        // old version: header("Location: epub.html?book=".$myDB->getBookUUID( $_GET['id'] ).".".$myDB->getBookType($_GET['id']) );
         if ( MYBRARY_HIDE_BOOKS ) {
-          header( "Location: epub.html?book=getbook.php?id%3D".$_GET['id'] );
+          $tmpPath = "getbook.php?id=".$_GET['id']."&fake=file.epub"; //To have BiB/i recognizing the book as ebook, it is neccessary to append &fake=file.epub. This is a quick hack to trick the viewer into loading the stream as zipped epub.
+          header( "Location: epub.html?book=".urlencode( $tmpPath ) );
         } else {
           header( "Location: epub.html?book=../".$tmpBookStore.$myDB->getBookUUID( $_GET['id'] ).".epub" );
         }

@@ -9,6 +9,7 @@
 
   $tmpUserRole = $myDB->getRole( $tmpUsername );
 //Is the user logged in on do we have valid credentials?
+/*
 if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
   //NO
   //Stop script (not neccessary but recommended)
@@ -16,6 +17,7 @@ if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
   echo "Unable to verify your session.";
   exit();
 } else {
+*/
   if ( isset( $_GET['id'] ) ) { //Do we have an ID?
     //YES
     $tmpShortenedID = $_GET['id'];
@@ -26,18 +28,22 @@ if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
     switch ( $tmpBookType ) { //These are the official MIME-types for supported filetypes
       case "pdf":
         header('Content-Type: application/pdf');
+        header('Content-Disposition: inline; filename="'.$tmpBookUUID.'.pdf"');
         break;
 
       case "epub":
         header('Content-Type: application/epub+zip');
+        header('Content-Disposition: inline; filename="'.$tmpBookUUID.'.epub"');
         break;
 
       case "md":
         header('Content-Type: text/markdown');
+        header('Content-Disposition: inline; filename="'.$tmpBookUUID.'.md"');
         break;
 
       case "txt":
         header('Content-Type: text/plain');
+        header('Content-Disposition: inline; filename="'.$tmpBookUUID.'.txt"');
         break;
     }
     header("Pragma: no-cache");
@@ -54,5 +60,5 @@ if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
   } else {
     echo "error. no id provided";
   }
-}
+//}
 ?>
