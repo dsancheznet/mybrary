@@ -9,7 +9,7 @@
   $myDB = new Database( );
   //Is the user not logged in and do we have invalid credentials?
   if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) or ($tmpUsername=="") or $tmpPassword=="") {
-      echo "Error: You are not logged in";
+    echo "error: not logged in";
   } else {
     if ( isset( $_FILES['files'] ) ) {
       $tmpCoverStorage = MYBRARY_MEDIA_PATH.'covers/';

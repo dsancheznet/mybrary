@@ -16,5 +16,7 @@
   define("MYBRARY_COVER_STREAMER","getcover.php");
   //Define the book stream script ( for NAS installations )
   define("MYBRARY_BOOK_STREAMER","getbook.php");
+  //Try to extract covers from supported books (pdf)
+  define("MYBRARY_EXTRACT_COVER", true );
 
 ?>

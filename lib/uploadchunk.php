@@ -9,7 +9,7 @@
   $myDB = new Database();
   //Is the user not logged in and do we have invalid credentials?
   if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) or ($tmpUsername=="") or $tmpPassword=="") {
-      echo "Error: You are not logged in";
+      echo "error: not logged in";
   } else {
     if ( isset( $_FILES['files'] ) ) {
       for ( $tmpCounter = 0; $tmpCounter < count( $_FILES['files']['name'] ); $tmpCounter++ ) {
@@ -36,23 +36,24 @@
               break;
           case '':
               $tmpFileExtension = 'cbz';
-              break;
-*/
+              break;*/
           default:
-              echo "Error: No recognized file format detected";
+              echo "error: no recognized file format detected";
               exit;
         }
         if ( move_uploaded_file( $tmpFileName, $tmpBookStorage.$tmpNewUUID.".".$tmpFileExtension ) ) {
           if ( $myDB->setNewBook( $tmpNewUUID, $_FILES['files']['name'][$tmpCounter], $tmpFileExtension, $tmpUsername ) ) {
             echo "ok";
-            if ( $tmpFileExtension=='pdf' ) { exec("convert ".$tmpBookStorage.$tmpNewUUID.".".$tmpFileExtension."[0] ".$tmpCoverStorage.$tmpNewUUID.".jpg"); }
+            if ( ( $tmpFileExtension=='pdf' ) and ( MYBRARY_EXTRACT_COVER ) ) {
+              exec("convert ".$tmpBookStorage.$tmpNewUUID.".".$tmpFileExtension."[0] ".$tmpCoverStorage.$tmpNewUUID.".jpg");
+            }
           }
         } else {
-          echo "Error: Could not move the file from ".$tmpFileName." to ".$tmpBookStorage.$tmpFileName.".".$tmpFileExtension." <br />";
+          echo "error: could not move the file from ".$tmpFileName." to ".$tmpBookStorage.$tmpFileName.".".$tmpFileExtension." <br />";
         }
       }
     } else {
-      echo "Error: No filename";
+      echo "error: no filename";
     }
   }
 ?>
