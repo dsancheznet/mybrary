@@ -63,7 +63,7 @@
   <label class="uk-form-label" for="form-stacked-select">ISBN</label>
     <div class="uk-inline uk-width-1-1">
         <span class="uk-form-icon" uk-icon="icon: social"></span>
-        <input id="bookform-isbn" class="uk-input" value="<?php echo $myDB->getBookISBN($_POST['bookid']);?>" pattern="[0-9]{13}">
+        <input id="bookform-isbn" class="uk-input" value="<?php echo $myDB->getBookISBN($_POST['bookid']);?>" pattern="[0-9]{13}" onchange="RemoveDashesAndSpacesFrom( document.getElementById('bookform-isbn') )">
     </div>
 </div>
 

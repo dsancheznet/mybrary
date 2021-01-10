@@ -20,7 +20,7 @@ if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
     $tmpBookID = $_POST['bookid'];
     $tmpBookUUID = $myDB->getBookUUID( $tmpBookID );
     if ( $myDB->eraseBookFromDB($tmpBookID) ) {
-      unlink( 'data/covers/'.$tmpBookUUID.'.jpg' );
+      unlink( MYBRARY_MEDIA_PATH.'covers/'.$tmpBookUUID.'.jpg' );
       echo "ok";
     } else {
       echo "error";

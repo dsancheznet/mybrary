@@ -6,13 +6,13 @@
   //Read the variables from session storage
   $tmpUsername = $_SESSION['username'];
   $tmpPassword = $_SESSION['md5pass'];
+  $myDB = new Database( );
   //Is the user not logged in and do we have invalid credentials?
   if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) or ($tmpUsername=="") or $tmpPassword=="") {
-      echo "Error: You are not logged in";
+    echo "error: not logged in";
   } else {
     if ( isset( $_FILES['files'] ) ) {
-      $tmpCoverStorage = 'data/covers/';
-      $myDB = new Database( 'db/mybrary.db' );
+      $tmpCoverStorage = MYBRARY_MEDIA_PATH.'covers/';
       $tmpUUID = $myDB->getBookUUID($_GET['id']);
       if ( file_exists($tmpCoverStorage.$tmpUUID.".jpg")) {
         unlink($tmpCoverStorage.$tmpUUID.".jpg");

@@ -70,9 +70,9 @@ Avatars are made by [Freepik](https://www.flaticon.com/authors/freepik) from [ww
 
 PDF Reader component [PDF.js](https://mozilla.github.io/pdf.js/) © Mozilla Foundation, licensed unter Apache license.
 
-ePUB Reader component [BiB/i](https://github.com/satorumurmur/bibi) is written by Satoru Matsushima and published under the GPL.
+ePUB Reader component [BiB/i](https://github.com/satorumurmur/bibi) is written by Satoru Matsushima and published under the MIT License.
 
-Markdown parser component [Parsedown](https://parsedown.org/) and [Parsedown Extra](https://github.com/erusev/parsedown-extra) by Emanuil Rusev and Antonio Stoilkov.
+Markdown parser component [Parsedown](https://parsedown.org/) and [Parsedown Extra](https://github.com/erusev/parsedown-extra) by Emanuil Rusev and Antonio Stoilkov under MIT License
 
 
 ### TODO

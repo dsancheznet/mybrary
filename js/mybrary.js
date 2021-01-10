@@ -142,6 +142,7 @@ function ShowUploadForm() {
 
 function ConfigureUpload() {
       var bar = document.getElementById('js-progressbar');
+      var panel = document.getElementById("result-panel");
       UIkit.upload('.js-upload', {
           url: 'lib/uploadchunk.php',
           multiple: true,
@@ -150,15 +151,18 @@ function ConfigureUpload() {
           },
           beforeAll: function () {
               console.log('beforeAll', arguments);
+              panel.innerHTML = "Files";
           },
           load: function () {
               console.log('load', arguments);
           },
           error: function () {
               console.log('error', arguments);
+              panel.innerHTML += "❌";
           },
           complete: function () {
               console.log('complete', arguments);
+              panel.innerHTML += ".";
           },
           loadStart: function (e) {
               console.log('loadStart', arguments);
@@ -188,8 +192,8 @@ function ConfigureUpload() {
                   ReloadSection("info-table", "infotable.php");
                   ReloadSection("search-bar", "searchbar.php");
                   ReloadSection("side-library", "sidelibrary.php");
-                  document.getElementById("result-panel").innerHTML = "ok";
-              }, 1000);
+                  panel.innerHTML += "✔️";
+              }, 500);
           }
       });
 }
@@ -281,8 +285,10 @@ function DeleteTag( tagID, tagCaption ) {
         if ( this.responseText == "error" ) {
           alert('Unknown Error.');
         } else {
-          ReloadSection("side-tags", "sidetags.php");
           ShowTagAdminForm();
+          ExecuteSearch();
+          ReloadSection("side-tags", "sidetags.php");
+          ReloadSection("info-table", "infotable.php");
         }
       }
     };
@@ -303,9 +309,9 @@ function ReadAndCreateTag() {
         if ( this.responseText == "error" ) {
           alert('Unknown Error.');
         } else {
+          ShowTagAdminForm();
           ReloadSection("info-table", "infotable.php");
           ReloadSection("side-tags", "sidetags.php");
-          ShowTagAdminForm();
       }
     }
   };
@@ -364,6 +370,11 @@ function ShowBookEditModal( bookID ) {
   xhr.send("bookid="+bookID);
 }
 
+function RemoveDashesAndSpacesFrom( fieldId ) {
+    var text = fieldId.value;
+    fieldId.value = text.replace(/-/g,'').replace(/\ /g,'');
+}
+
 function SaveBookData( bookID ) {
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
@@ -373,6 +384,9 @@ function SaveBookData( bookID ) {
         document.getElementById("save-message").hidden = false;
         document.getElementById("save-paragraph").innerHTML = "|"+tmpMessage+"|";
       }
+      ExecuteSearch();
+      ReloadSection("search-bar", "searchbar.php");
+      ReloadSection("side-tags", "sidetags.php");
     }
   };
   xhr.open("POST", "lib/editbook.php", true);
@@ -384,9 +398,6 @@ function SaveBookData( bookID ) {
     "&summary="+document.getElementById("bookform-summary").value+
     "&isbn="+document.getElementById("bookform-isbn").value+
     "&tags="+document.getElementById("bookform-tags").value );
-  ExecuteSearch();
-  ReloadSection("side-tags", "sidetags.php");
-  ReloadSection("search-bar", "searchbar.php");
 }
 
 function ShowBookSummary( bookID ) {
@@ -414,12 +425,12 @@ function ResetSearchTerm() {
   ExecuteSearch();
 }
 
-function  RegisterTypeSearch( typeToSearch ) {
+function RegisterTypeSearch( typeToSearch ) {
   document.getElementById('type-filter').value = typeToSearch;
   ExecuteSearch();
 }
 
-function  RegisterTagSearch( tagToSearch ) {
+function RegisterTagSearch( tagToSearch ) {
   document.getElementById('tag-filter').value = tagToSearch;
   ExecuteSearch();
 }

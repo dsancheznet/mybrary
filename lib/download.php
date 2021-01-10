@@ -25,7 +25,7 @@ if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
         'txt'=>'text/plain'
     ];
     $tmpFileType = $myDB->getBookType( $_GET['id'] );
-    $tmpFilepath = 'data/books/'; //This is the relative path to all books
+    $tmpFilepath = MYBRARY_MEDIA_PATH.'books/'; //This is the relative path to all books
     $tmpFile = $tmpFilepath.$myDB->getBookUUID( $_GET['id'] ).'.'.$tmpFileType ); //Contruct a valid filename
     $tmpFileData = file_get_contents( $tmpFile );
     if ( file_exists( $tmpFile ) ) { //Does the file exist?

@@ -26,7 +26,7 @@ if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
   </h5>
 </div>
 <div>
-  <span class="uk-text-small"><span data-uk-icon="icon:album" class="uk-margin-small-right uk-text-primary"></span>Shown</span>
+  <span class="uk-text-small"><span data-uk-icon="icon:album" class="uk-margin-small-right uk-text-primary"></span>Books shown</span>
   <h5 id="book-count" class="uk-heading-primary uk-margin-remove uk-text-primary">
 <?php
     echo $myDB->getBookCount();
