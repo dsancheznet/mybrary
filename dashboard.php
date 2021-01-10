@@ -129,7 +129,10 @@ Y88b  d88P  888   888  .d88P 888        888        888   888   d88P 888  T88b   
 
 				</div>
 				<div class="uk-text-center uk-text-light" style="font-size: 8px;">
-					mybrary engine <?php echo MYBRARY_VERSION;?>
+					mybrary engine <span class="uk-text-primary"><?php echo MYBRARY_VERSION;?></span><br />
+					upload_max_filesize <span class="uk-text-success"><? echo ini_get('upload_max_filesize');?></span><br />
+					post_max_size <span class="uk-text-success"><? echo ini_get('post_max_size');?></span><br />
+					memory_limit <span class="uk-text-success"><? echo ini_get('memory_limit');?></span>
 				</div>
 			</div>
 		</aside>

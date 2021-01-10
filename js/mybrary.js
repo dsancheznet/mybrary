@@ -142,6 +142,7 @@ function ShowUploadForm() {
 
 function ConfigureUpload() {
       var bar = document.getElementById('js-progressbar');
+      var panel = document.getElementById("result-panel");
       UIkit.upload('.js-upload', {
           url: 'lib/uploadchunk.php',
           multiple: true,
@@ -150,15 +151,18 @@ function ConfigureUpload() {
           },
           beforeAll: function () {
               console.log('beforeAll', arguments);
+              panel.innerHTML = "Files";
           },
           load: function () {
               console.log('load', arguments);
           },
           error: function () {
               console.log('error', arguments);
+              panel.innerHTML += "❌";
           },
           complete: function () {
               console.log('complete', arguments);
+              panel.innerHTML += ".";
           },
           loadStart: function (e) {
               console.log('loadStart', arguments);
@@ -188,8 +192,8 @@ function ConfigureUpload() {
                   ReloadSection("info-table", "infotable.php");
                   ReloadSection("search-bar", "searchbar.php");
                   ReloadSection("side-library", "sidelibrary.php");
-                  document.getElementById("result-panel").innerHTML = "ok";
-              }, 1000);
+                  panel.innerHTML += "✔️";
+              }, 500);
           }
       });
 }
@@ -364,6 +368,11 @@ function ShowBookEditModal( bookID ) {
   xhr.open("POST", "lib/modalbook.php", true);
   xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhr.send("bookid="+bookID);
+}
+
+function RemoveDashesAndSpacesFrom( fieldId ) {
+    var text = fieldId.value;
+    fieldId.value = text.replace(/-/g,'').replace(/\ /g,'');
 }
 
 function SaveBookData( bookID ) {
