@@ -36,7 +36,23 @@ if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
       header('Content-Length: '.filesize($tmpFile));
       header("Pragma: no-cache");
       header("Expires: 0");
-      echo $tmpFileData;
+      //YES
+      if ( MYBRARY_DOWNLOAD_CHUNKS ) {
+
+        $tmpFile = fopen( $tmpFile, 'rb');
+        while (!feof($tmpFile))
+        {
+            $tmpBuffer = fread( $tmpFile, MYBRARY_MAX_CHUNK_SIZE );
+            echo $tmpBuffer;
+            ob_flush();
+            flush();
+        }
+        fclose( $tmpFile );
+
+      } else {
+        //Print back the filedata (one big chunk)
+        echo file_get_contents( MYBRARY_MEDIA_PATH.'books/'.$tmpBookUUID.'.'.$tmpBookType );
+      }
     } else {
       //NO
       echo "error. file does no exist";

@@ -46,13 +46,28 @@ if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
         header('Content-Disposition: inline; filename="'.$tmpBookUUID.'.txt"');
         break;
     }
+    header('Content-Length: '.filesize( MYBRARY_MEDIA_PATH.'books/'.$tmpBookUUID.'.'.$tmpBookType ));
     header("Pragma: no-cache");
     header("Expires: 0");
     //Does the filename exist (it should, since it is in the DB)?
     if ( file_exists( MYBRARY_MEDIA_PATH.'books/'.$tmpBookUUID.'.'.$tmpBookType  ) ) {
       //YES
-      //Print back the filedata
-      echo file_get_contents( MYBRARY_MEDIA_PATH.'books/'.$tmpBookUUID.'.'.$tmpBookType );
+      if ( MYBRARY_DOWNLOAD_CHUNKS ) {
+
+        $tmpFile = fopen( MYBRARY_MEDIA_PATH.'books/'.$tmpBookUUID.'.'.$tmpBookType, 'rb');
+        while (!feof($tmpFile))
+        {
+            $tmpBuffer = fread( $tmpFile, MYBRARY_MAX_CHUNK_SIZE );
+            echo $tmpBuffer;
+            ob_flush();
+            flush();
+        }
+        fclose( $tmpFile );
+
+      } else {
+        //Print back the filedata (one big chunk)
+        echo file_get_contents( MYBRARY_MEDIA_PATH.'books/'.$tmpBookUUID.'.'.$tmpBookType );
+      }
     } else {
       //NO (this MUST be a library error)
       echo "error. database inconsistency / file not found";

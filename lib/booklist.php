@@ -29,7 +29,7 @@ if ( $myDB->getBookCount() > 0 ) { //Are there books to list?
 	foreach ( $tmpBooks as $tmpBook ) { //Iterate over books; Attention: variable names are different (plural vs singular)
       $tmpBookCounter++;
 			echo '<div><div class="uk-card uk-card-large uk-card-default uk-padding-small" style="min-width: 200px;"><div class="uk-card-media-top uk-padding-small ">';
-			echo '<a href="#modal-dash" onclick="ShowBookEditModal('.$tmpBook['id'].')" uk-toggle><img src="lib/getcover.php?uuid='.$tmpBook['uuid'].'" width="500px" alt=""></a></div>';
+			echo '<a href="#modal-dash" onclick="ShowBookEditModal('.$tmpBook['id'].')" uk-toggle><img id="booklist-img-'.$tmpBook['uuid'].'" src="lib/getcover.php?uuid='.$tmpBook['uuid'].'" width="500px" alt=""></a></div>';
 			echo '<div class="uk-card-body uk-padding-remove"><span class="uk-text-bold">'.$tmpBook['title'].'</span>';
 			echo '<span class="uk-text-small uk-align-center">'.$tmpBook['author'].'</span>';
       if ( $myDB->getTagCountForBook( $tmpBook['id'] ) ) {

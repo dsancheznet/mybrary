@@ -156,7 +156,7 @@ Y88b  d88P  888   888  .d88P 888        888        888   888   d88P 888  T88b   
 				</div>
 				<hr>
 				<div class="uk-grid uk-grid-medium" data-uk-grid uk-sortable="handle: .sortable-icon">
-					<div id="book-list" class="uk-child-width-1-1@xs uk-child-width-1-2@s uk-child-width-1-3@m uk-child-width-1-4@l" uk-grid>
+					<div id="book-list" class="uk-child-width-1-1@xs uk-child-width-1-3@s uk-child-width-1-4@m uk-child-width-1-5@l" uk-grid>
 <!--
 888888b.    .d88888b.   .d88888b.  888    d8P  888      8888888 .d8888b. 88888888888
 888  "88b  d88P" "Y88b d88P" "Y88b 888   d8P   888        888  d88P  Y88b    888

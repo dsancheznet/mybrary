@@ -28,6 +28,14 @@ From terminal (this will be changed in the future) execute the following stateme
 ```
 
 
+### Extracting covers from PDF files
+
+Here you have a little one-liner which is a complete bash script to be executed from **within `books` directory**
+
+```
+  for I in *.pdf; do if [ -f ../covers/${I/.pdf/.jpg} ]; then echo "$I alrteady has a cover"; else echo "Creating cover for $I"; convert $I[0] ../covers/${I/.pdf/.jpg}; fi; done;
+```
+
 ### Starting to serve on a desktop computer
 
 Once all databases have been created, use the following statement to run mybrary from inside it's directory:
@@ -78,3 +86,4 @@ Markdown parser component [Parsedown](https://parsedown.org/) and [Parsedown Ext
 ### TODO
 
 - [ ] Verbose error messages
+Right now, error messages only appear inside the debug window watching at the return of the xhr request. It is abolutely neccessary to change that behaviour so normal users are able to troubleshoot when something does not go to plan.
