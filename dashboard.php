@@ -196,7 +196,7 @@ Y88b  d88P  888   888  .d88P 888        888        888   888   d88P 888  T88b   
 				<footer class="uk-section uk-section-small uk-text-center">
 					<hr>
 					<p class="uk-text-small uk-text-center">
-						© 2020 by D.Sánchez - <a href="https://www.dsanchez.net/">www.dsanchez.net</a> | Published under the <a href="https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12" title="European General Public License" target="_blank" data-uk-tooltip>EUPL</a>
+						© 2020-<?php echo date('Y');?> by D.Sánchez - <a href="https://www.dsanchez.net/">www.dsanchez.net</a> | Published under the <a href="https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12" title="European General Public License" target="_blank" data-uk-tooltip>EUPL</a>
 					</p>
 				</footer>
 			</div>

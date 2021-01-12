@@ -107,6 +107,10 @@ include_once( 'ParsedownExtra.php');
       return $tmpDataset;
     }
 
+    function getFileNameForID( $tmpID ) {
+      return MYBRARY_MEDIA_PATH.'books/'.$this->getBookUUID( $tmpID ).'.'.$this->getBookType( $tmpID );
+    }
+
 /*
 ████████  █████   ██████  ███████ 
    ██    ██   ██ ██       ██      
@@ -310,6 +314,16 @@ include_once( 'ParsedownExtra.php');
       if (MYBRARY_DEBUG) { error_log('Executing '.'SELECT uploader FROM books WHERE id="'.$tmpID.'"' ); }
       $tmpDataset = $this->CONN->querySingle( 'SELECT uploader FROM books WHERE id="'.$tmpID.'"' );
       return strtolower($tmpDataset);
+    }
+
+    function getBookSize( $tmpID ) {
+      $tmpBytes = filesize( $this->getFileNameForID( $tmpID ) );
+      $tmpUnits = array('B', 'KB', 'MB', 'GB', 'TB');
+      $tmpBytes = max($tmpBytes, 0);
+      $tmpPow = floor(($tmpBytes ? log($tmpBytes) : 0) / log(1024));
+      $tmpPow = min($tmpPow, count($tmpUnits) - 1);
+      $tmpBytes /= (1 << (10 * $tmpPow));
+      return round($tmpBytes, 2).''.$tmpUnits[$tmpPow];
     }
 
     function eraseBookFromDB( $tmpID ) {

@@ -49,17 +49,59 @@ include_once('helper-classes.php');
   }
 
   function insertBookCard( $tmpBook, $tmpContentOnly = false ) {
-    error_log( "BookCard ".$tmpBook );
     $myDB = new Database();
     if ( !$tmpContentOnly ) { echo '<div id="book-card-'.$tmpBook['id'].'">'; }
-    echo '<div class="uk-card uk-card-large uk-card-default uk-padding-small" style="min-width: 200px;"><div class="uk-card-media-top uk-padding-small">';
-    echo '<a href="#modal-dash" onclick="ShowBookEditModal('.$tmpBook['id'].')" uk-toggle><img id="booklist-img-'.$tmpBook['uuid'].'" src="lib/getcover.php?uuid='.$tmpBook['uuid'].'" width="500px" alt=""></a></div>';
-    echo '<div class="uk-card-body uk-padding-remove"><span class="uk-text-bold">'.$tmpBook['title'].'</span>';
-    echo '<span class="uk-text-small uk-align-center">'.$tmpBook['author'].'</span>';
-    echo '<span class="uk-margin-small-right" uk-icon="icon: tag"></span><span class="uk-text-small">'.implode(', ', $myDB->getTagsForBook($tmpBook['id'])).'</span>';
-    echo '<span class="uk-label uk-align-center uk-text-center uk-margin-small-top uk-margin-small-bottom" onclick="window.open(\'https://isbnsearch.org/isbn/'.$tmpBook['isbn'].'\');">ISBN '.$tmpBook['isbn'].'</span>';
+
+/* Alternative look (I'm experimeting with this...)
+    echo '<div class="uk-card uk-card-small uk-width-1-1">';
+    echo '<div class="uk-card-header">';
+    echo '<div class="uk-grid-small uk-flex-middle" uk-grid>';
+    echo '<div class="uk-width-auto">';
+    echo '<img class="uk-border-rounded" width="100" id="booklist-img-'.$tmpBook['uuid'].'" src="lib/getcover.php?uuid='.$tmpBook['uuid'].'">';
+    echo '</div>';
+    echo '<div class="uk-width-expand">';
+    echo '<p class="uk-card-title uk-margin-remove-bottom uk-text-small">'.$tmpBook['title'].'</p>';
+    echo '<p class="uk-text-meta uk-margin-remove-top">'.$myDB->getBookSize( $tmpBook['id'] ).'</p>';
+    echo '</div>';
+    echo '</div>';
+    echo '</div>';
+    echo '<div class="uk-card-body">';
+    echo '<p>'.$tmpBook['author'].'<br />'.'<span class="uk-margin-small-right" uk-icon="icon: tag"></span><small>'.implode(', ', $myDB->getTagsForBook($tmpBook['id'])).'</small></p>';
+    echo '</div>';
+    echo '<div class="uk-card-footer">';
+    insertBookMenu( $tmpBook );
+    echo '</div>';
+    echo '</div>';
+*/
+
+    echo '<div class="uk-card uk-card-large uk-card-default uk-padding-small" style="min-width: 200px;">
+          <div class="uk-card-media-top">';
+    echo '<a href="#modal-dash" onclick="ShowBookEditModal('.$tmpBook['id'].')" uk-toggle>
+            <img id="booklist-img-'.$tmpBook['uuid'].'" class="uk-border-rounded" src="lib/getcover.php?uuid='.$tmpBook['uuid'].'" width="500px" alt="" uk-tooltip="title: Uploader: '.$myDB->getBookUploader($tmpBook['id']).' ;pos: top">
+          </a>
+          </div>';
+    echo '<div class="uk-card-body uk-padding-remove">
+          <span class="uk-text-bold">'.$tmpBook['title'].'
+          </span><br />';
+    echo '<div class="uk-align-right">
+          <small class="uk-text-muted"><b>
+          '.$myDB->getBookType( $tmpBook['id'] )."</b>, ".$myDB->getBookSize( $tmpBook['id'] ).'
+          </small>
+          </div><br />';
+    echo '<div>
+          '.$tmpBook['author'].'
+          </div><br />';
+    echo '<span class="uk-margin-small-right" uk-icon="icon: tag"></span>
+          <small>
+          '.implode(', ', $myDB->getTagsForBook($tmpBook['id'])).'
+          </small>';
+    echo '<span class="uk-label uk-align-center uk-text-center uk-margin-small-top uk-margin-small-bottom" onclick="window.open(\'https://isbnsearch.org/isbn/'.$tmpBook['isbn'].'\');">
+            ISBN '.$tmpBook['isbn'].'
+          </span>';
     echo insertBookMenu( $tmpBook );
-    echo '</div></div>';
+    echo '</div>
+          </div>';
+
     if ( !$tmpContentOnly ) { echo '</div>'; }
   }
 

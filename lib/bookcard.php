@@ -8,10 +8,10 @@
   $tmpUsername = $_SESSION['username'];
   $tmpPassword = $_SESSION['md5pass'];
 
-  $myDB = new Database();
 
   if ( isset( $_GET['id'] ) ) {
 
+    $myDB = new Database();
     echo insertBookCard( $myDB->getBookArray($_GET['id']) , true );
 
   } else {

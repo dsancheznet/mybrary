@@ -26,14 +26,13 @@ if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
     ];
     $tmpFileType = $myDB->getBookType( $_GET['id'] );
     $tmpFilepath = MYBRARY_MEDIA_PATH.'books/'; //This is the relative path to all books
-    $tmpFile = $tmpFilepath.$myDB->getBookUUID( $_GET['id'] ).'.'.$tmpFileType ); //Contruct a valid filename
-    $tmpFileData = file_get_contents( $tmpFile );
+    $tmpFile = $tmpFilepath.$myDB->getBookUUID( $_GET['id'] ).'.'.$tmpFileType; //Contruct a valid filename
     if ( file_exists( $tmpFile ) ) { //Does the file exist?
       //YES
-      $tmpFileName = $myDB->getBookTitle( $_GET['id'] ).".".$tmpFileType ); //Construct a valid filename
+      $tmpFileName = $myDB->getBookTitle( $_GET['id'] )." - ".$myDB->getBookAuthor( $_GET['id'] ).".".$tmpFileType; //Construct a valid filename
       header('Content-disposition: attachment; filename='.$tmpFileName );
       header('Content-type: '.$tmpMimeType[ $tmpFileType ] );
-      header('Content-Length: '.filesize($tmpFile));
+      header('Content-Length: '.filesize( $tmpFile ));
       header("Pragma: no-cache");
       header("Expires: 0");
       //YES

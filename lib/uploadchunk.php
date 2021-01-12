@@ -30,8 +30,8 @@
           case 'text/plain':
               $tmpFileExtension = 'txt';
               break;
-/* I'll leave this prepared for comics as well, until I find a suitable reader
-          case 'text/plain':
+          /* I'll leave this prepared for comics as well, until I find a suitable reader
+          case '':
               $tmpFileExtension = 'cbr';
               break;
           case '':
