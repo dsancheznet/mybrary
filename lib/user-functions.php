@@ -77,7 +77,7 @@ include_once('helper-classes.php');
     echo '<div class="uk-card uk-card-large uk-card-default uk-padding-small" style="min-width: 200px;">
           <div class="uk-card-media-top">';
     echo '<a href="#modal-dash" onclick="ShowBookEditModal('.$tmpBook['id'].')" uk-toggle>
-            <img id="booklist-img-'.$tmpBook['uuid'].'" class="uk-border-rounded" src="lib/getcover.php?uuid='.$tmpBook['uuid'].'" width="500px" alt="" uk-tooltip="title: Uploader: '.$myDB->getBookUploader($tmpBook['id']).' ;pos: top">
+            <img id="booklist-img-'.$tmpBook['id'].'" class="uk-border-rounded" src="lib/getcover.php?uuid='.$tmpBook['uuid'].'" width="500px" alt="" uk-tooltip="title: Uploader: '.$myDB->getBookUploader($tmpBook['id']).' ;pos: top">
           </a>
           </div>';
     echo '<div class="uk-card-body uk-padding-remove">

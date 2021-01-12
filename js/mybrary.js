@@ -198,6 +198,17 @@ function ConfigureUpload() {
       });
 }
 
+function ReloadImageSrc( bookID ) {
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("booklist-img-"+bookID).src = this.responseText;
+    }
+  };
+  xhr.open("GET", "lib/imagecard.php?id="+bookID, true);
+  xhr.send();
+}
+
 function ConfigurePhotoUpload( bookID ) {
       UIkit.upload('.js-upload', {
           url: 'lib/uploadphoto.php?id='+bookID,
@@ -230,7 +241,7 @@ function ConfigurePhotoUpload( bookID ) {
           completeAll: function () {
               console.log('completeAll', arguments);
               setTimeout(function () {
-                  ReloadSection("book-list", "booklist.php");
+                  ReloadImageSrc( bookID );
               }, 500);
           }
       });
