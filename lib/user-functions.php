@@ -48,6 +48,21 @@ include_once('helper-classes.php');
     </ul>';
   }
 
+  function insertBookCard( $tmpBook, $tmpContentOnly = false ) {
+    error_log( "BookCard ".$tmpBook );
+    $myDB = new Database();
+    if ( !$tmpContentOnly ) { echo '<div id="book-card-'.$tmpBook['id'].'">'; }
+    echo '<div class="uk-card uk-card-large uk-card-default uk-padding-small" style="min-width: 200px;"><div class="uk-card-media-top uk-padding-small">';
+    echo '<a href="#modal-dash" onclick="ShowBookEditModal('.$tmpBook['id'].')" uk-toggle><img id="booklist-img-'.$tmpBook['uuid'].'" src="lib/getcover.php?uuid='.$tmpBook['uuid'].'" width="500px" alt=""></a></div>';
+    echo '<div class="uk-card-body uk-padding-remove"><span class="uk-text-bold">'.$tmpBook['title'].'</span>';
+    echo '<span class="uk-text-small uk-align-center">'.$tmpBook['author'].'</span>';
+    echo '<span class="uk-margin-small-right" uk-icon="icon: tag"></span><span class="uk-text-small">'.implode(', ', $myDB->getTagsForBook($tmpBook['id'])).'</span>';
+    echo '<span class="uk-label uk-align-center uk-text-center uk-margin-small-top uk-margin-small-bottom" onclick="window.open(\'https://isbnsearch.org/isbn/'.$tmpBook['isbn'].'\');">ISBN '.$tmpBook['isbn'].'</span>';
+    echo insertBookMenu( $tmpBook );
+    echo '</div></div>';
+    if ( !$tmpContentOnly ) { echo '</div>'; }
+  }
+
   function insertUserMenu( $tmpUserRole, $tmpUsername ) {
     echo '<div class="uk-dropdown user-drop" data-uk-dropdown="mode: click; pos: bottom-center; animation: uk-animation-slide-bottom-small; duration: 150"><ul class="uk-nav uk-dropdown-nav uk-text-left">';
     echo '<li><a href="#modal-dash" onclick="ShowPersonalInfoForm(\''.$tmpUsername.'\')" uk-toggle><span data-uk-icon="icon: user"></span> Personal Info</a></li>';

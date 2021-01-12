@@ -130,9 +130,33 @@ Y88b  d88P  888   888  .d88P 888        888        888   888   d88P 888  T88b   
 				</div>
 				<div class="uk-text-center uk-text-light" style="font-size: 8px;">
 					mybrary engine <span class="uk-text-primary"><?php echo MYBRARY_VERSION;?></span><br />
-					upload_max_filesize <span class="uk-text-success"><? echo ini_get('upload_max_filesize');?></span><br />
-					post_max_size <span class="uk-text-success"><? echo ini_get('post_max_size');?></span><br />
-					memory_limit <span class="uk-text-success"><? echo ini_get('memory_limit');?></span>
+					<?php
+						$tmpMaxFilesize = ini_get('upload_max_filesize');
+						$tmpPostMaxSize = ini_get('post_max_size');
+						$tmpMemoryLimit = ini_get('memory_limit');
+						if ( $tmpMaxFilesize == "" ) {
+							echo 'upload_max_filesize <span class="uk-text-warning">NOT AVLBL.';
+						} else {
+							echo 'upload_max_filesize <span class="uk-text-success">'.$tmpMaxFilesize;
+						}
+					?>
+					</span><br />
+					<?php
+					if ( $tmpMaxFilesize == "" ) {
+						echo 'post_max_size <span class="uk-text-warning">NOT AVLBL.';
+					} else {
+						echo 'post_max_size <span class="uk-text-success">'.$tmpPostMaxSize;
+					}
+					?>
+					</span><br />
+					<?php
+					if ( $tmpMaxFilesize == "" ) {
+						echo 'memory_limit <span class="uk-text-warning">NOT AVLBL.';
+					} else {
+						echo 'memory_limit <span class="uk-text-success">'.$tmpMemoryLimit;
+					}
+					?>
+					</span><br />
 				</div>
 			</div>
 		</aside>

@@ -269,6 +269,11 @@ include_once( 'ParsedownExtra.php');
       return $tmpDataArray;
     }
 
+    function getBookArray( $tmpID ) {
+      if (MYBRARY_DEBUG) { error_log( "Executing ".'SELECT * FROM books WHERE id="'.$tmpID.'"' ); }
+      return $this->CONN->querySingle( 'SELECT * FROM books WHERE id="'.$tmpID.'"', true );
+    }
+
     function getBookUUID( $tmpID ) {
       if (MYBRARY_DEBUG) { error_log( "Executing ".'SELECT uuid FROM books WHERE id="'.$tmpID.'"' ); }
       return $this->CONN->querySingle( 'SELECT uuid FROM books WHERE id="'.$tmpID.'"' );

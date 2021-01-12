@@ -344,8 +344,8 @@ function DeleteBookWithId( bookID ) {
           alert('Unknown Error.');
         } else {
           ReloadSection("info-table", "infotable.php");
-          ReloadSection("book-list", "booklist.php");
           ReloadSection("side-library", "sidelibrary.php");
+          document.getElementById( 'book-card-'+bookID ).remove();
         }
       }
     };
@@ -384,9 +384,7 @@ function SaveBookData( bookID ) {
         document.getElementById("save-message").hidden = false;
         document.getElementById("save-paragraph").innerHTML = "|"+tmpMessage+"|";
       }
-      ExecuteSearch();
-      ReloadSection("search-bar", "searchbar.php");
-      ReloadSection("side-tags", "sidetags.php");
+      UpdateBookData( bookID );
     }
   };
   xhr.open("POST", "lib/editbook.php", true);
@@ -398,6 +396,18 @@ function SaveBookData( bookID ) {
     "&summary="+document.getElementById("bookform-summary").value+
     "&isbn="+document.getElementById("bookform-isbn").value+
     "&tags="+document.getElementById("bookform-tags").value );
+}
+
+function UpdateBookData( bookID ) {
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById('book-card-'+bookID).innerHTML = this.responseText;
+    }
+  };
+  xhr.open("POST", "lib/bookcard.php?id="+bookID, true);
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhr.send();
 }
 
 function ShowBookSummary( bookID ) {
