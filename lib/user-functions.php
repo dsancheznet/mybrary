@@ -52,7 +52,7 @@ include_once('helper-classes.php');
     $myDB = new Database();
     if ( !$tmpContentOnly ) { echo '<div id="book-card-'.$tmpBook['id'].'">'; }
 
-/* Alternative look (I'm experimeting with this...)
+/* Alternative look (I'm experimenting with this...)
     echo '<div class="uk-card uk-card-small uk-width-1-1">';
     echo '<div class="uk-card-header">';
     echo '<div class="uk-grid-small uk-flex-middle" uk-grid>';
@@ -80,7 +80,7 @@ include_once('helper-classes.php');
             <img id="booklist-img-'.$tmpBook['id'].'" class="uk-border-rounded" src="lib/getcover.php?uuid='.$tmpBook['uuid'].'" width="500px" alt="" uk-tooltip="title: Uploader: '.$myDB->getBookUploader($tmpBook['id']).' ;pos: top">
           </a>
           </div>';
-    echo '<div class="uk-card-body uk-padding-remove">
+    echo '<div class="uk-card-body uk-padding-remove-left uk-padding-remove-right uk-padding-remove-bottom">
           <span class="uk-text-bold">'.$tmpBook['title'].'
           </span><br />';
     echo '<div class="uk-align-right">
@@ -98,6 +98,7 @@ include_once('helper-classes.php');
     echo '<span class="uk-label uk-align-center uk-text-center uk-margin-small-top uk-margin-small-bottom" onclick="window.open(\'https://isbnsearch.org/isbn/'.$tmpBook['isbn'].'\');">
             ISBN '.$tmpBook['isbn'].'
           </span>';
+    echo '<hr>';
     echo insertBookMenu( $tmpBook );
     echo '</div>
           </div>';

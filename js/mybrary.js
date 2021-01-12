@@ -210,12 +210,14 @@ function ReloadImageSrc( bookID ) {
 }
 
 function ConfigurePhotoUpload( bookID ) {
+      var uploadButton = document.getElementById('cover-upload-button');
       UIkit.upload('.js-upload', {
           url: 'lib/uploadphoto.php?id='+bookID,
           multiple: false,
           allow: '*.jpg',
           beforeSend: function () {
               console.log('beforeSend', arguments);
+              uploadButton.innerHTML = "0%";
           },
           beforeAll: function () {
               console.log('beforeAll', arguments);
@@ -234,12 +236,15 @@ function ConfigurePhotoUpload( bookID ) {
           },
           progress: function (e) {
               console.log('progress', arguments);
+              let percentage = e.loaded / e.total * 100;
+              uploadButton.innerHTML = percentage+"%";
           },
           loadEnd: function (e) {
               console.log('loadEnd', arguments);
           },
           completeAll: function () {
               console.log('completeAll', arguments);
+              uploadButton.innerHTML = "Add cover";
               setTimeout(function () {
                   ReloadImageSrc( bookID );
               }, 500);
@@ -362,7 +367,27 @@ function DeleteBookWithId( bookID ) {
     };
     xhr.open("POST", "lib/delete.php", true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhr.send("bookid="+bookID);
+    xhr.send("function=book&bookid="+bookID);
+  } else {
+    return;
+  }
+}
+
+function RemoveCoverFromBook( bookID ) {
+  let xhr = new XMLHttpRequest();
+  if (confirm("Sure you want to delete this cover?")) {
+    xhr.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        if ( this.responseText == "error" ) {
+          alert('Unknown Error.');
+        } else {
+          ReloadImageSrc( bookID );
+        }
+      }
+    };
+    xhr.open("POST", "lib/delete.php", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send("function=cover&bookid="+bookID);
   } else {
     return;
   }

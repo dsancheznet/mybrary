@@ -26,15 +26,22 @@
 ?>
 
 <button class="uk-modal-close-default" type="button" uk-close></button>
+
 <div id="save-message" class="uk-alert-warning" uk-alert hidden>
   <a class="uk-alert-close" uk-close></a>
   <p id="save-paragraph">
   </p>
 </div>
+
 <div class="js-upload uk-align-right uk-margin-small-top" uk-form-custom>
     <input type="file">
-    <button class="uk-button uk-button-default" type="button" tabindex="-1">Add cover</button>
+    <button id="cover-upload-button" class="uk-button uk-button-default" type="button" tabindex="-1">Add cover</button>
 </div>
+
+<div class="uk-align-right uk-margin-small-top" uk-form-custom>
+    <button class="uk-button uk-button-default" type="button" tabindex="-1" onclick="RemoveCoverFromBook( <?php echo $_POST['bookid']; ?> )">Remove Cover</button>
+</div>
+
 <h4>· Book Data ·</h4>
 <div class="uk-margin">
   <label class="uk-form-label" for="form-stacked-select">Title</label>

@@ -17,13 +17,25 @@ if ( !checkSessionStatus( $tmpUsername, $tmpPassword ) ) {
   echo "Unable to verify your session.";
   exit();
 } elseif ( isset($_POST['bookid']) ) {
-    $tmpBookID = $_POST['bookid'];
-    $tmpBookUUID = $myDB->getBookUUID( $tmpBookID );
-    if ( $myDB->eraseBookFromDB($tmpBookID) ) {
-      unlink( MYBRARY_MEDIA_PATH.'covers/'.$tmpBookUUID.'.jpg' );
-      echo "ok";
+    if ( isset( $_POST['function'] ) ) {
+      $tmpBookID = $_POST['bookid'];
+      $tmpBookUUID = $myDB->getBookUUID( $tmpBookID );
+      switch ( $_POST['function'] ) {
+        case "book": //There is no missing break command here. It was intentionally omitted to trigger the deletion of a cover after a book is deleted
+            if ( $myDB->eraseBookFromDB($tmpBookID) ) {
+              echo "ok";
+            } else {
+              echo "error";
+            }
+        case "cover": //This gets triggered together with book deletion or alone.
+            unlink( MYBRARY_MEDIA_PATH.'covers/'.$tmpBookUUID.'.jpg' );
+            break;
+        case deafault:
+            echo "error. no function found";
+      }
+
     } else {
-      echo "error";
+      echo "error. no function selected";
     }
 
 }
