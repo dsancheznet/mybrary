@@ -262,7 +262,13 @@ include_once( 'ParsedownExtra.php');
       $tmpBaseArray = [];
       if ( $tmpTag<>"" ) { $tmpBaseArray[] = "tag='".$tmpTag."'"; }
       if ( $tmpType<>"" ) { $tmpBaseArray[] = "type='".$tmpType."'"; }
-      if ( $tmpSearchTerm<>"" ) { $tmpBaseArray[] = "title LIKE '%".$tmpSearchTerm."%'"; }
+      if ( $tmpSearchTerm<>"" ) {
+        if ( strtolower(substr( $tmpSearchTerm, 0, 7 ))=="author:" ) {
+          $tmpBaseArray[] = "author LIKE '%".substr( $tmpSearchTerm, 7 )."%'";
+        } else {
+          $tmpBaseArray[] = "title LIKE '%".$tmpSearchTerm."%'";
+        }
+      }
       $tmpBaseSearch.=((count($tmpBaseArray)>0)?"WHERE ":"").implode(" AND ", $tmpBaseArray);
       $tmpDataset = $this->CONN->query( $tmpBaseSearch.$tmpOrdering );
       if (MYBRARY_DEBUG) { error_log( "Executing ".$tmpBaseSearch ); }

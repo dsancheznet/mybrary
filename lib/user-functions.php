@@ -81,7 +81,7 @@ include_once('helper-classes.php');
           </a>
           </div>';
     echo '<div class="uk-card-body uk-padding-remove-left uk-padding-remove-right uk-padding-remove-bottom">
-          <span class="uk-text-bold">'.$tmpBook['title'].'
+          <span style="font-weight: bold;">'.$tmpBook['title'].'
           </span><br />';
     echo '<div class="uk-align-right">
           <small class="uk-text-muted"><b>
